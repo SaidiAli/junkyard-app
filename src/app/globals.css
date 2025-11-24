@@ -1,26 +1,154 @@
 @import "tailwindcss";
 
+/* CSS Variables - Light Mode */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Semantic Colors */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(240 10% 10%);
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(240 10% 10%);
+
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(240 10% 10%);
+
+  /* Primary - Automotive Red/Salmon */
+  --primary: hsl(0 84% 55%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  --secondary: hsl(240 6% 97%);
+  --secondary-foreground: hsl(240 10% 10%);
+
+  --muted: hsl(240 6% 97%);
+  --muted-foreground: hsl(240 4% 46%);
+
+  --accent: hsl(0 84% 55%);
+  --accent-foreground: hsl(0 0% 100%);
+
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  /* Form Elements */
+  --border: hsl(240 6% 90%);
+  --input: hsl(240 6% 90%);
+  --ring: hsl(0 84% 55%);
+
+  /* Border Radius */
+  --radius: 0.75rem;
+
+  /* Automotive Theme Specific */
+  --dark-bg: hsl(240 10% 8%);
+  --dark-foreground: hsl(0 0% 98%);
+
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark Mode - System Preference */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: hsl(240 10% 8%);
+    --foreground: hsl(0 0% 98%);
+
+    --card: hsl(240 8% 12%);
+    --card-foreground: hsl(0 0% 98%);
+
+    --popover: hsl(240 8% 12%);
+    --popover-foreground: hsl(0 0% 98%);
+
+    --primary: hsl(0 84% 55%);
+    --primary-foreground: hsl(0 0% 100%);
+
+    --secondary: hsl(240 8% 15%);
+    --secondary-foreground: hsl(0 0% 98%);
+
+    --muted: hsl(240 8% 15%);
+    --muted-foreground: hsl(240 5% 65%);
+
+    --accent: hsl(0 84% 55%);
+    --accent-foreground: hsl(0 0% 100%);
+
+    --destructive: hsl(0 62% 50%);
+    --destructive-foreground: hsl(0 0% 98%);
+
+    --border: hsl(240 8% 20%);
+    --input: hsl(240 8% 20%);
+    --ring: hsl(0 84% 55%);
   }
+}
+
+/* Tailwind Theme Configuration */
+@theme inline {
+  /* Colors - Map CSS variables to Tailwind utilities */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Custom automotive colors */
+  --color-dark: var(--dark-bg);
+  --color-dark-foreground: var(--dark-foreground);
+
+  /* Fonts */
+  --font-family-sans: var(--font-sans), Arial, Helvetica, sans-serif;
+  --font-family-mono: var(--font-mono), monospace;
+
+  /* Border Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Box Shadows */
+  --shadow-card: 0 2px 8px hsl(240 10% 10% / 0.08);
+  --shadow-hover: 0 8px 24px hsl(240 10% 10% / 0.12);
+  --shadow-primary: 0 4px 16px hsl(0 84% 55% / 0.3);
+
+  /* Animations - Accordion */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/* Base Styles */
+* {
+  border-color: var(--border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }

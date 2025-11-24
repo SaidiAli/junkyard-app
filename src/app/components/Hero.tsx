@@ -1,5 +1,4 @@
 import { ChevronRight, Play } from "lucide-react";
-import heroImage from "@/assets/hero-vehicles.jpg";
 import { Button } from "./ui/button";
 
 const Hero = () => {
@@ -8,7 +7,7 @@ const Hero = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src={heroImage}
+          src={"/imgs/hero-vehicles.jpg"}
           alt="Luxury vehicles showcase"
           className="w-full h-full object-cover"
         />
@@ -36,13 +35,6 @@ const Hero = () => {
               Watch Video
             </Button>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-        <div className="w-6 h-10 border-2 border-dark-foreground/30 rounded-full flex items-start justify-center p-2">
-          <div className="w-1 h-2 bg-dark-foreground/50 rounded-full" />
         </div>
       </div>
     </section>

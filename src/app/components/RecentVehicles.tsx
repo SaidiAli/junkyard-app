@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 const RecentVehicles = () => {
   const vehicles = [
     {
-      image: carRed,
+      image: "/imgs/car-red-1.jpg",
       name: "Porsche 911 Turbo S",
       price: "$225,000",
       year: "2024",
@@ -17,7 +17,7 @@ const RecentVehicles = () => {
       seats: "4 Seats",
     },
     {
-      image: carWhite,
+      image: "/imgs/car-white-suv.jpg",
       name: "Range Rover Sport",
       price: "$95,000",
       year: "2024",
@@ -26,7 +26,7 @@ const RecentVehicles = () => {
       seats: "5 Seats",
     },
     {
-      image: carBlue,
+      image: "/imgs/car-blue.jpg",
       name: "Lamborghini Huracán",
       price: "$285,000",
       year: "2023",
@@ -35,7 +35,7 @@ const RecentVehicles = () => {
       seats: "2 Seats",
     },
     {
-      image: carSilver,
+      image: "/imgs/car-silver.jpg",
       name: "Mercedes S-Class",
       price: "$125,000",
       year: "2024",
@@ -44,7 +44,7 @@ const RecentVehicles = () => {
       seats: "5 Seats",
     },
     {
-      image: carWhite,
+      image: "/imgs/car-white-suv.jpg",
       name: "Audi Q8 e-tron",
       price: "$88,500",
       year: "2024",
@@ -53,7 +53,7 @@ const RecentVehicles = () => {
       seats: "5 Seats",
     },
     {
-      image: carRed,
+      image: "/imgs/car-red-1.jpg",
       name: "Ferrari F8 Tributo",
       price: "$350,000",
       year: "2023",
@@ -62,7 +62,7 @@ const RecentVehicles = () => {
       seats: "2 Seats",
     },
     {
-      image: carBlue,
+      image: "/imgs/car-blue.jpg",
       name: "BMW M5 Competition",
       price: "$135,000",
       year: "2024",
@@ -71,7 +71,7 @@ const RecentVehicles = () => {
       seats: "5 Seats",
     },
     {
-      image: carSilver,
+      image: "/imgs/car-silver.jpg",
       name: "Lexus LS 500h",
       price: "$92,000",
       year: "2024",

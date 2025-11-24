@@ -1,15 +1,11 @@
-import carRed from "@/assets/car-red-1.jpg";
-import carWhite from "@/assets/car-white-suv.jpg";
-import carBlue from "@/assets/car-blue.jpg";
-import carSilver from "@/assets/car-silver.jpg";
 import { Button } from "./ui/button";
 
 const BrowseByType = () => {
   const types = [
-    { name: "Sedan", count: "2,890 Vehicles", image: carSilver },
-    { name: "SUV", count: "1,756 Vehicles", image: carWhite },
-    { name: "Sports Car", count: "943 Vehicles", image: carRed },
-    { name: "Electric", count: "1,234 Vehicles", image: carBlue },
+    { name: "Sedan", count: "2,890 Vehicles", image: "/imgs/car-silver.jpg" },
+    { name: "SUV", count: "1,756 Vehicles", image: "/imgs/car-white-suv.jpg" },
+    { name: "Sports Car", count: "943 Vehicles", image: "/imgs/car-red-1.jpg" },
+    { name: "Electric", count: "1,234 Vehicles", image: "imgs/car-blue.jpg" },
   ];
 
   return (

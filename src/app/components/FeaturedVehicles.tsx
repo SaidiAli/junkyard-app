@@ -1,13 +1,9 @@
 import VehicleCard from "./VehicleCard";
-import carRed from "@/assets/car-red-1.jpg";
-import carWhite from "@/assets/car-white-suv.jpg";
-import carBlue from "@/assets/car-blue.jpg";
-import carSilver from "@/assets/car-silver.jpg";
 
 const FeaturedVehicles = () => {
   const vehicles = [
     {
-      image: carWhite,
+      image: "/imgs/car-white-suv.jpg",
       name: "BMW X7 M Sport",
       price: "$89,990",
       year: "2024",
@@ -16,7 +12,7 @@ const FeaturedVehicles = () => {
       seats: "7 Seats",
     },
     {
-      image: carRed,
+      image: "imgs/car-red-1.jpg",
       name: "Mercedes AMG GT",
       price: "$145,000",
       year: "2024",
@@ -25,7 +21,7 @@ const FeaturedVehicles = () => {
       seats: "2 Seats",
     },
     {
-      image: carBlue,
+      image: "/imgs/car-blue.jpg",
       name: "Audi RS6 Avant",
       price: "$125,500",
       year: "2023",
@@ -34,7 +30,7 @@ const FeaturedVehicles = () => {
       seats: "5 Seats",
     },
     {
-      image: carSilver,
+      image: "/imgs/car-silver.jpg",
       name: "Tesla Model S Plaid",
       price: "$112,000",
       year: "2024",

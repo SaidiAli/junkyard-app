@@ -1,5 +1,4 @@
 import { Star } from "lucide-react";
-import testimonialBg from "@/assets/testimonial-bg.jpg";
 import { Card, CardContent } from "./ui/card";
 
 const Testimonials = () => {
@@ -29,7 +28,7 @@ const Testimonials = () => {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src={testimonialBg}
+          src={"/imgs/testimonial-bg.jpg"}
           alt="Customer feedback"
           className="w-full h-full object-cover"
         />

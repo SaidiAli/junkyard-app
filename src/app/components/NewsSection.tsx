@@ -8,19 +8,19 @@ import { Card, CardContent } from "./ui/card";
 const NewsSection = () => {
   const articles = [
     {
-      image: carRed,
+      image: "/imgs/car-red-1.jpg",
       date: "January 15, 2024",
       title: "The Future of Electric Vehicles: What to Expect in 2024",
       excerpt: "Discover the latest trends and innovations shaping the electric vehicle market this year.",
     },
     {
-      image: carWhite,
+      image: "/imgs/car-white-suv.jpg",
       date: "January 12, 2024",
       title: "Top 10 SUVs for Families: A Comprehensive Guide",
       excerpt: "Find the perfect family SUV with our detailed comparison of safety, comfort, and features.",
     },
     {
-      image: carBlue,
+      image: "/imgs/car-blue.jpg",
       date: "January 8, 2024",
       title: "Luxury Car Maintenance: Tips from the Pros",
       excerpt: "Expert advice on keeping your luxury vehicle in pristine condition year-round.",
