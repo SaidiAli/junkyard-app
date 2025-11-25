@@ -1,8 +1,36 @@
 'use client'
 
-import { Car, Menu, Search, User } from "lucide-react";
+import { Menu } from "lucide-react";
+import Image from 'next/image';
 import { useState } from "react";
 import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+} from "./ui/sheet";
+
+const navItems = [
+  { label: 'Home', href: '#home' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Dealership', href: '#dealership' },
+  { label: 'Inventory', href: '#inventory' },
+  {
+    label: 'Pages',
+    href: '#pages',
+    hasDropdown: true,
+    dropdownItems: [{ label: 'Shop', href: '#shop' }]
+  },
+  { label: 'Blog', href: '#blog' },
+  { label: 'Contact Us', href: '#contact' }
+];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,75 +40,86 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <Car className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">KARS</span>
+          <div className="flex items-center">
+            <Image
+              src="/imgs/logo.svg"
+              alt="Kars"
+              width={120}
+              height={40}
+              className="w-24 lg:w-[120px] h-auto"
+            />
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
-            <a href="#home" className="text-foreground hover:text-primary transition-colors font-medium">
-              Home
-            </a>
-            <a href="#listings" className="text-foreground hover:text-primary transition-colors font-medium">
-              Listings
-            </a>
-            <a href="#about" className="text-foreground hover:text-primary transition-colors font-medium">
-              About
-            </a>
-            <a href="#services" className="text-foreground hover:text-primary transition-colors font-medium">
-              Services
-            </a>
-            <a href="#news" className="text-foreground hover:text-primary transition-colors font-medium">
-              News
-            </a>
+            {navItems.map((item) =>
+              item.hasDropdown ? (
+                <DropdownMenu key={item.label}>
+                  <DropdownMenuTrigger className="text-foreground hover:text-primary transition-colors font-medium outline-none">
+                    {item.label}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {item.dropdownItems?.map((subItem) => (
+                      <DropdownMenuItem key={subItem.label}>
+                        <a href={subItem.href} className="w-full">
+                          {subItem.label}
+                        </a>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="text-foreground hover:text-primary transition-colors font-medium"
+                >
+                  {item.label}
+                </a>
+              )
+            )}
           </div>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-4">
-            <Button size="icon" className="hidden md:flex">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button size="icon" className="hidden md:flex">
-              <User className="h-5 w-5" />
-            </Button>
-            <Button className="hidden md:flex">
-              Get Started
-            </Button>
+          {/* Mobile Menu Toggle */}
+          <div className="flex items-center">
             <Button
               size="icon"
+              variant="ghost"
               className="lg:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => setIsMenuOpen(true)}
             >
               <Menu className="h-6 w-6" />
             </Button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="lg:hidden py-4 space-y-4">
-            <a href="#home" className="block text-foreground hover:text-primary transition-colors font-medium">
-              Home
-            </a>
-            <a href="#listings" className="block text-foreground hover:text-primary transition-colors font-medium">
-              Listings
-            </a>
-            <a href="#about" className="block text-foreground hover:text-primary transition-colors font-medium">
-              About
-            </a>
-            <a href="#services" className="block text-foreground hover:text-primary transition-colors font-medium">
-              Services
-            </a>
-            <a href="#news" className="block text-foreground hover:text-primary transition-colors font-medium">
-              News
-            </a>
-            <Button className="w-full">
-              Get Started
-            </Button>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Menu Sheet */}
+      <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <SheetContent side="left" className="w-3/4 sm:max-w-sm">
+          <SheetHeader className="mb-8">
+            <Image
+              src="/imgs/logo.svg"
+              alt="Kars"
+              width={120}
+              height={40}
+              className="w-[120px] h-auto"
+            />
+          </SheetHeader>
+          <nav className="space-y-6">
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="block text-foreground hover:text-primary transition-colors font-medium text-lg"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </SheetContent>
+      </Sheet>
     </nav>
   );
 };

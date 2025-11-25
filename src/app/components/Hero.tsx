@@ -1,41 +1,53 @@
-import { ChevronRight, Play } from "lucide-react";
-import { Button } from "./ui/button";
+import Image from 'next/image';
+import SearchForm from './SearchForm';
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark text-dark-foreground pt-20">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+    >
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={"/imgs/hero-vehicles.jpg"}
-          alt="Luxury vehicles showcase"
-          className="w-full h-full object-cover"
+        <Image
+          src="/imgs/hero_bg_5_1.jpg"
+          alt="Hero background"
+          fill
+          className="object-cover"
+          priority
         />
-        <div className="absolute inset-0 bg-dark/80" />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 z-10 text-center">
-        <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-            A World of Choices
-            <br />
-            <span className="text-primary">All in One Place</span>
-          </h1>
-          <p className="text-lg md:text-xl text-dark-foreground/80 max-w-2xl mx-auto">
-            Discover your perfect vehicle from our extensive collection of premium cars, SUVs, and motorcycles
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="hero" size="lg" className="group">
-              Browse Vehicles
-              <ChevronRight className="group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="outline" size="lg" className="bg-background/10 backdrop-blur-sm border-background/20 text-dark-foreground hover:bg-background/20">
-              <Play className="h-4 w-4" />
-              Watch Video
-            </Button>
+      {/* Content Container */}
+      <div className="container mx-auto px-4 z-10 relative pb-32 lg:pb-48">
+        <div className="flex flex-col items-center justify-center">
+          {/* Title Section */}
+          <div className="text-center mb-8 lg:mb-12 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <h1 className="text-[38px] md:text-[50px] lg:text-[55px] xl:text-[74px] font-bold leading-tight text-white">
+              A World of Choices{' '}
+              <span className="block text-[32px] md:text-[38px] lg:text-[45px] xl:text-[64px] font-normal mt-2">
+                All in One Place
+              </span>
+            </h1>
+          </div>
+
+          {/* Search Form */}
+          <div className="w-full max-w-7xl">
+            <SearchForm />
           </div>
         </div>
+      </div>
+
+      {/* Overlapping Car Image at Bottom */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 w-full max-w-6xl pointer-events-none -mb-16 md:-mb-24 lg:-mb-32">
+        <Image
+          src="/imgs/hero_5_1.png"
+          alt="Featured car"
+          width={1200}
+          height={400}
+          className="w-full h-auto"
+        />
       </div>
     </section>
   );
