@@ -28,20 +28,20 @@ const Testimonials = () => {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src={"/imgs/testimonial-bg.jpg"}
+          src={"/imgs/hero-vehicles.jpg"}
           alt="Customer feedback"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-dark/90" />
+        <div className="absolute inset-0 bg-background/95" />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-dark-foreground">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
             Our Customer Feedback
           </h2>
-          <p className="text-lg text-dark-foreground/80 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Don't just take our word for it - hear what our satisfied customers have to say
           </p>
         </div>

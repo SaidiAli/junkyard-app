@@ -12,10 +12,7 @@ const PopularBrands = () => {
     <section className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Popular Brands</h2>
-          <p className="text-lg text-muted-foreground">
-            Premium selection from world-leading automotive manufacturers
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Popular Brands</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {brands.map((brand, index) => (

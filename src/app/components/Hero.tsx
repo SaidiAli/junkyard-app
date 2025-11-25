@@ -5,30 +5,27 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-[60%] flex items-center justify-center overflow-hidden pt-20"
     >
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/imgs/hero_bg_5_1.jpg"
+          src="https://res.cloudinary.com/zurri-cloud/image/upload/v1761209098/junkyard/n7lra4eaom7y4m6mqqwf.jpg"
           alt="Hero background"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/20" />
       </div>
 
       {/* Content Container */}
-      <div className="container mx-auto px-4 z-10 relative pb-32 lg:pb-48">
+      <div className="container m-auto z-10 relative px-4 py-16">
         <div className="flex flex-col items-center justify-center">
           {/* Title Section */}
           <div className="text-center mb-8 lg:mb-12 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            <h1 className="text-[38px] md:text-[50px] lg:text-[55px] xl:text-[74px] font-bold leading-tight text-white">
-              A World of Choices{' '}
-              <span className="block text-[32px] md:text-[38px] lg:text-[45px] xl:text-[64px] font-normal mt-2">
-                All in One Place
-              </span>
+            <h1 className="text-[35px] md:text-[45px] font-bold leading-tight text-white">
+              BUY AND SELL CARS IN UGANDA
             </h1>
           </div>
 
@@ -40,15 +37,15 @@ const Hero = () => {
       </div>
 
       {/* Overlapping Car Image at Bottom */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 w-full max-w-6xl pointer-events-none -mb-16 md:-mb-24 lg:-mb-32">
+      {/* <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 w-full max-w-6xl pointer-events-none -mb-16 md:-mb-24 lg:-mb-32">
         <Image
-          src="/imgs/hero_5_1.png"
+          src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764077539/junkyard/dtac7o5rjijkbi30gyrt.png"
           alt="Featured car"
           width={1200}
           height={400}
           className="w-full h-auto"
         />
-      </div>
+      </div> */}
     </section>
   );
 };

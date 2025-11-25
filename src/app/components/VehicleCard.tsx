@@ -1,4 +1,4 @@
-import { Heart, Gauge, Fuel, Users } from "lucide-react";
+import { Gauge, Fuel, Users } from "lucide-react";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 
@@ -21,7 +21,6 @@ const VehicleCard = ({ image, name, price, year, mileage, fuel, seats }: Vehicle
           alt={name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
-        <Heart className="h-5 w-5" />
         {year && (
           <div className="absolute bottom-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
             {year}

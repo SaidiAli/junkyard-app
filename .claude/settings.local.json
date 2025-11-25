@@ -3,7 +3,8 @@
     "allow": [
       "Bash(find:*)",
       "Bash(cat:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []

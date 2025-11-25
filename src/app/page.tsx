@@ -17,10 +17,8 @@ export default function Home() {
       <FeaturedVehicles />
       <PopularBrands />
       <BrowseByType />
-      <WhyChooseUs />
       <RecentVehicles />
       <Testimonials />
-      <NewsSection />
       <Footer />
     </div>
   );
