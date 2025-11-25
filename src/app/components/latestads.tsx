@@ -1,11 +1,11 @@
 import VehicleCard from "./VehicleCard";
 
-const FeaturedVehicles = () => {
+const LatestAds = () => {
   const vehicles = [
     {
       image: "/imgs/car-white-suv.jpg",
       name: "BMW X7 M Sport",
-      price: "$89,990",
+      price: "UGX 89,990,000",
       year: "2024",
       mileage: "5,420 km",
       fuel: "Hybrid",
@@ -14,7 +14,7 @@ const FeaturedVehicles = () => {
     {
       image: "imgs/car-red-1.jpg",
       name: "Mercedes AMG GT",
-      price: "$145,000",
+      price: "UGX 145,000,000",
       year: "2024",
       mileage: "2,100 km",
       fuel: "Petrol",
@@ -23,7 +23,7 @@ const FeaturedVehicles = () => {
     {
       image: "/imgs/car-blue.jpg",
       name: "Audi RS6 Avant",
-      price: "$125,500",
+      price: "UGX 125,500,000",
       year: "2023",
       mileage: "8,900 km",
       fuel: "Petrol",
@@ -32,7 +32,7 @@ const FeaturedVehicles = () => {
     {
       image: "/imgs/car-silver.jpg",
       name: "Tesla Model S Plaid",
-      price: "$112,000",
+      price: "UGX 112,000,000",
       year: "2024",
       mileage: "1,500 km",
       fuel: "Electric",
@@ -56,4 +56,4 @@ const FeaturedVehicles = () => {
   );
 };
 
-export default FeaturedVehicles;
+export default LatestAds;

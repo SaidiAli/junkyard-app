@@ -5,12 +5,12 @@ import carBlue from "@/assets/car-blue.jpg";
 import carSilver from "@/assets/car-silver.jpg";
 import { Button } from "./ui/button";
 
-const RecentVehicles = () => {
+const PremiumAds = () => {
   const vehicles = [
     {
       image: "/imgs/car-red-1.jpg",
       name: "Porsche 911 Turbo S",
-      price: "$225,000",
+      price: "UGX 30,225,000",
       year: "2024",
       mileage: "500 km",
       fuel: "Petrol",
@@ -19,7 +19,7 @@ const RecentVehicles = () => {
     {
       image: "/imgs/car-white-suv.jpg",
       name: "Range Rover Sport",
-      price: "$95,000",
+      price: "UGX 95,000,000",
       year: "2024",
       mileage: "3,200 km",
       fuel: "Diesel",
@@ -28,7 +28,7 @@ const RecentVehicles = () => {
     {
       image: "/imgs/car-blue.jpg",
       name: "Lamborghini Huracán",
-      price: "$285,000",
+      price: "UGCX 285,000,000",
       year: "2023",
       mileage: "1,800 km",
       fuel: "Petrol",
@@ -37,7 +37,7 @@ const RecentVehicles = () => {
     {
       image: "/imgs/car-silver.jpg",
       name: "Mercedes S-Class",
-      price: "$125,000",
+      price: "UGX 125,000,000",
       year: "2024",
       mileage: "2,100 km",
       fuel: "Hybrid",
@@ -46,7 +46,7 @@ const RecentVehicles = () => {
     {
       image: "/imgs/car-white-suv.jpg",
       name: "Audi Q8 e-tron",
-      price: "$88,500",
+      price: "UGX 88,500,000",
       year: "2024",
       mileage: "4,500 km",
       fuel: "Electric",
@@ -55,7 +55,7 @@ const RecentVehicles = () => {
     {
       image: "/imgs/car-red-1.jpg",
       name: "Ferrari F8 Tributo",
-      price: "$350,000",
+      price: "UGX 350,000,000",
       year: "2023",
       mileage: "900 km",
       fuel: "Petrol",
@@ -64,7 +64,7 @@ const RecentVehicles = () => {
     {
       image: "/imgs/car-blue.jpg",
       name: "BMW M5 Competition",
-      price: "$135,000",
+      price: "UGX 135,000,000",
       year: "2024",
       mileage: "1,200 km",
       fuel: "Petrol",
@@ -73,7 +73,7 @@ const RecentVehicles = () => {
     {
       image: "/imgs/car-silver.jpg",
       name: "Lexus LS 500h",
-      price: "$92,000",
+      price: "UGX 92,000,000",
       year: "2024",
       mileage: "5,800 km",
       fuel: "Hybrid",
@@ -86,13 +86,10 @@ const RecentVehicles = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Recent Vehicle Items</h2>
-            <p className="text-lg text-muted-foreground">
-              Latest additions to our premium collection
-            </p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Premium ADS</h2>
           </div>
           <Button variant="hero" className="hidden md:flex">
-            View All Vehicles
+            View All
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -101,11 +98,11 @@ const RecentVehicles = () => {
           ))}
         </div>
         <div className="text-center mt-8 md:hidden">
-          <Button variant="hero">View All Vehicles</Button>
+          <Button variant="hero">View All</Button>
         </div>
       </div>
     </section>
   );
 };
 
-export default RecentVehicles;
+export default PremiumAds;

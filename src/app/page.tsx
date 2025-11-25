@@ -1,11 +1,11 @@
 import BrowseByType from "./components/BrowseByType";
-import FeaturedVehicles from "./components/FeaturedVehicles";
+import LatestAds from "./components/latestads";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import NewsSection from "./components/NewsSection";
 import PopularBrands from "./components/PopularBrands";
-import RecentVehicles from "./components/RecentVehicles";
+import PremiumAds from "./components/premiumads";
 import Testimonials from "./components/Testimonials";
 import WhyChooseUs from "./components/WhyChooseUs";
 
@@ -14,11 +14,10 @@ export default function Home() {
     <div className="min-h-screen">
       <Navbar />
       <Hero />
-      <FeaturedVehicles />
+      <PremiumAds />
       <PopularBrands />
       <BrowseByType />
-      <RecentVehicles />
-      <Testimonials />
+      <LatestAds />
       <Footer />
     </div>
   );

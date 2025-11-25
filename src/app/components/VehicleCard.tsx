@@ -60,7 +60,7 @@ const VehicleCard = ({ image, name, price, year, mileage, fuel, seats }: Vehicle
           View Details
         </Button>
         <Button className="flex-1">
-          Test Drive
+          Call Now
         </Button>
       </CardFooter>
     </Card>

@@ -11,7 +11,7 @@ const PopularBrands = () => {
   return (
     <section className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Popular Brands</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
