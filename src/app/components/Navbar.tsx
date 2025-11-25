@@ -9,6 +9,7 @@ import {
   SheetContent,
   SheetHeader,
 } from "./ui/sheet";
+import Link from "next/link";
 
 const navItems = [
   { label: 'Sunday Bazaar', href: '/sunday-bazaar' },
@@ -27,13 +28,16 @@ const Navbar = () => {
         <div className="flex items-center justify-around h-22">
           {/* Logo */}
           <div className="flex items-center">
-            <Image
-              src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764080623/junkyard/lrmnidwq25bck2xsvhlu.svg"
-              alt="Kars"
-              width={120}
-              height={40}
-              className="w-24 lg:w-[180px] h-auto"
-            />
+            <Link href={"/"}>
+              <Image
+                src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764080623/junkyard/lrmnidwq25bck2xsvhlu.svg"
+                alt="Kars"
+                width={120}
+                height={40}
+                className="w-24 lg:w-[180px] h-auto"
+              />
+            </Link>
+
           </div>
 
           {/* Desktop Navigation */}

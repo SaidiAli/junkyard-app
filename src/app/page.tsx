@@ -12,13 +12,13 @@ import WhyChooseUs from "./components/WhyChooseUs";
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <Navbar />
+      {/* <Navbar /> */}
       <Hero />
       <PremiumAds />
       <PopularBrands />
       <BrowseByType />
       <LatestAds />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
