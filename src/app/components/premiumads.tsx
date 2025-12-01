@@ -4,6 +4,7 @@ import carWhite from "@/assets/car-white-suv.jpg";
 import carBlue from "@/assets/car-blue.jpg";
 import carSilver from "@/assets/car-silver.jpg";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 const PremiumAds = () => {
   const vehicles = [
@@ -88,9 +89,11 @@ const PremiumAds = () => {
           <div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Premium ADS</h2>
           </div>
-          <Button variant="hero" className="hidden md:flex">
-            View All
-          </Button>
+          <Link href="/shop">
+            <Button variant="hero" className="hidden md:flex cursor">
+              View All
+            </Button>
+          </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {vehicles.map((vehicle, index) => (

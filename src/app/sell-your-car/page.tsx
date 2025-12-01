@@ -1,7 +1,438 @@
+'use client'
+
+import { useState } from 'react';
+import { Upload, Check, Info } from 'lucide-react';
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import { Textarea } from "@/app/components/ui/textarea";
+import { Checkbox } from "@/app/components/ui/checkbox";
+import { Label } from "@/app/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
+
+// Data Lists
+const categories = ['Buses', 'Hatchback', 'Mini-Truck', 'Off-Road', 'Pickup', 'Saloon', 'Sedan', 'SUV', 'Truck', 'Van', 'Wagon'];
+const brands = ['Audi', 'BMW', 'Daihatsu', 'Ford', 'Hino', 'Isuzu', 'Land Rover', 'Mazda', 'Mercedes-Benz', 'Mitsubishi', 'Nissan', 'Subaru', 'Suzuki', 'Toyota', 'Volkswagen', 'Volvo'];
+const fuelTypes = ['Diesel', 'Electric', 'Petrol', 'Hybrid', 'LPG Gas'];
+const featuresList = ['ABS', 'Air Conditioner', 'Power Steering', 'Sun Roof', 'Air Bags', 'GPS', 'Security System'];
+const transmissions = ['Automatic', 'Manual'];
+const conditions = ['Foreign Used', 'Locally Used', 'New'];
+const driveTypes = ['2WD', '4WD', 'AWD'];
+const locations = ['Kampala', 'Jinja', 'Arua', 'Gulu', 'Lira', 'Masaka', 'Mbale', 'Mbarara', 'Mpigi', 'Mukono', 'Soroti'];
+const adTypes = ['Free', 'Premium', 'Car dealership'];
+
+// Generate years 1990-2025
+const years = Array.from({ length: 2025 - 1990 + 1 }, (_, i) => (2025 - i).toString());
+
 export default function SellYourCarPage() {
-    return (
-        <div className="w-auto">
-            <p>Sell you car</p>
+  const [formData, setFormData] = useState({
+    category: '',
+    adType: 'For Sale',
+    title: '',
+    description: '',
+    brand: '',
+    model: '',
+    year: '',
+    fuel: '',
+    mileage: '',
+    color: '',
+    transmission: '',
+    condition: '',
+    engineCapacity: '',
+    drive: '',
+    numberPlate: '',
+    price: '',
+    location: '',
+    sellerPhone: '0777 123 456', // Default/Mock value
+    sellerEmail: 'user@example.com', // Default/Mock value
+    features: [] as string[],
+    photos: null as FileList | null
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckboxChange = (feature: string, checked: boolean) => {
+    setFormData(prev => {
+      if (checked) {
+        return { ...prev, features: [...prev.features, feature] };
+      } else {
+        return { ...prev, features: prev.features.filter(f => f !== feature) };
+      }
+    });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFormData(prev => ({ ...prev, photos: e.target.files }));
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form Submitted:', formData);
+    // Handle form submission logic here (API call)
+    alert("Ad submitted successfully!");
+  };
+
+  return (
+    <div className="min-h-screen bg-secondary/30 py-12 px-4 sm:px-6 lg:px-8 pt-32">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-foreground">Sell Your Car</h1>
+          <p className="text-muted-foreground mt-2">Fill in the details below to list your vehicle for sale.</p>
         </div>
-    )
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Basic Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Basic Information</CardTitle>
+              <CardDescription>Essential details about your listing.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="category">Category</Label>
+                <Select onValueChange={(value) => handleSelectChange('category', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(cat => (
+                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="adType">Type of Ad</Label>
+                <Select defaultValue="For Sale" onValueChange={(value) => handleSelectChange('adType', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Ad Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {adTypes.map(type => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="title">Title</Label>
+                <Input 
+                  id="title" 
+                  name="title" 
+                  placeholder="e.g., Clean Toyota Corolla 2020" 
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea 
+                  id="description" 
+                  name="description" 
+                  placeholder="Describe the condition, history, and key selling points..." 
+                  className="h-32"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Vehicle Specifications */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Vehicle Details</CardTitle>
+              <CardDescription>Specifics about the car.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="brand">Car Brand</Label>
+                <Select onValueChange={(value) => handleSelectChange('brand', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Brand" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {brands.map(brand => (
+                      <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="model">Car Model</Label>
+                <Input 
+                  id="model" 
+                  name="model" 
+                  placeholder="e.g., Corolla" 
+                  value={formData.model}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="year">Year of Make</Label>
+                <Select onValueChange={(value) => handleSelectChange('year', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {years.map(year => (
+                      <SelectItem key={year} value={year}>{year}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="fuel">Fuel Type</Label>
+                <Select onValueChange={(value) => handleSelectChange('fuel', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Fuel Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fuelTypes.map(fuel => (
+                      <SelectItem key={fuel} value={fuel}>{fuel}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="transmission">Transmission</Label>
+                <Select onValueChange={(value) => handleSelectChange('transmission', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Transmission" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {transmissions.map(trans => (
+                      <SelectItem key={trans} value={trans}>{trans}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="condition">Condition</Label>
+                <Select onValueChange={(value) => handleSelectChange('condition', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Condition" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {conditions.map(cond => (
+                      <SelectItem key={cond} value={cond}>{cond}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="mileage">Mileage (km)</Label>
+                <Input 
+                  id="mileage" 
+                  name="mileage" 
+                  type="number" 
+                  placeholder="0" 
+                  value={formData.mileage}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="color">Color</Label>
+                <Input 
+                  id="color" 
+                  name="color" 
+                  placeholder="e.g., Silver" 
+                  value={formData.color}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="engineCapacity">Engine Capacity (cc)</Label>
+                <Input 
+                  id="engineCapacity" 
+                  name="engineCapacity" 
+                  placeholder="e.g., 2000" 
+                  value={formData.engineCapacity}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="drive">Drive</Label>
+                <Select onValueChange={(value) => handleSelectChange('drive', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Drive Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {driveTypes.map(drive => (
+                      <SelectItem key={drive} value={drive}>{drive}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="numberPlate">Number Plate</Label>
+                <Input 
+                  id="numberPlate" 
+                  name="numberPlate" 
+                  placeholder="e.g., UBA 123A" 
+                  value={formData.numberPlate}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Features & Media */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Features & Media</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-3">
+                <Label>Features</Label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {featuresList.map((feature) => (
+                    <div key={feature} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`feature-${feature}`} 
+                        onCheckedChange={(checked: any) => handleCheckboxChange(feature, checked as boolean)}
+                      />
+                      <label
+                        htmlFor={`feature-${feature}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {feature}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="photos">Photos</Label>
+                <div className="border-2 border-dashed border-input rounded-lg p-8 text-center hover:bg-accent/50 transition-colors">
+                  <Input 
+                    id="photos" 
+                    type="file" 
+                    multiple 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={handleFileChange}
+                  />
+                  <Label htmlFor="photos" className="cursor-pointer flex flex-col items-center gap-2">
+                    <Upload className="h-10 w-10 text-muted-foreground" />
+                    <span className="text-lg font-medium">Click to upload photos</span>
+                    <span className="text-sm text-muted-foreground">SVG, PNG, JPG or GIF (MAX. 800x400px)</span>
+                  </Label>
+                  {formData.photos && (
+                    <div className="mt-4 text-sm text-primary font-medium">
+                      {formData.photos.length} files selected
+                    </div>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Price & Contact */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Price & Location</CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="price">Price (UGX)</Label>
+                <Input 
+                  id="price" 
+                  name="price" 
+                  type="number" 
+                  placeholder="e.g., 25000000" 
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="location">Location</Label>
+                <Select onValueChange={(value) => handleSelectChange('location', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {locations.map(loc => (
+                      <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="sellerPhone">Seller Phone Number</Label>
+                <div className="relative">
+                  <Input 
+                    id="sellerPhone" 
+                    name="sellerPhone" 
+                    value={formData.sellerPhone} 
+                    onChange={handleInputChange}
+                    className="pl-10"
+                    readOnly // Assuming default fill implies read-only or just pre-filled
+                  />
+                  <Info className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                </div>
+                <p className="text-[0.8rem] text-muted-foreground">Phone number linked to your account.</p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="sellerEmail">Seller Email</Label>
+                <div className="relative">
+                  <Input 
+                    id="sellerEmail" 
+                    name="sellerEmail" 
+                    value={formData.sellerEmail} 
+                    onChange={handleInputChange}
+                    className="pl-10"
+                    readOnly
+                  />
+                  <Info className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                </div>
+                <p className="text-[0.8rem] text-muted-foreground">Email linked to your account.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="flex justify-end gap-4">
+            <Button variant="outline" type="button" onClick={() => window.history.back()}>Cancel</Button>
+            <Button type="submit" size="lg" className="w-full md:w-auto">Post Ad</Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }

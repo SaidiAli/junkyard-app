@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 const BrowseByType = () => {
@@ -19,9 +20,11 @@ const BrowseByType = () => {
             </p>
           </div>
           <div className="hidden md:flex gap-4">
-            <Button className="text-white">
-              View All
-            </Button>
+            <Link href="/shop">
+              <Button className="text-white">
+                View All
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
