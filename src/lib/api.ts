@@ -1,35 +1,97 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+"use client"
 
-export class ApiError extends Error {
-    status: number;
-    data: any;
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios"
+import { ApiResponse, ErrorResponse } from "./types"
 
-    constructor(message: string, status: number, data: any) {
-        super(message);
-        this.status = status;
-        this.data = data;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
+
+// Create axios instance
+export const api = axios.create({
+    baseURL: API_URL,
+    headers: {
+        "Content-Type": "application/json",
+    },
+    timeout: 30000,
+})
+
+// Request interceptor to add auth token
+api.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+        const accessToken = typeof window !== "undefined"
+            ? localStorage.getItem("token")
+            : null
+
+
+        if (accessToken && config.headers) {
+            config.headers.Authorization = `Bearer ${accessToken}`
+        }
+
+        return config
+    },
+    (error) => {
+        return Promise.reject(error)
     }
-}
+)
 
-export async function apiClient<T = any>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${API_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+// Response interceptor for handling errors and token refresh
+api.interceptors.response.use(
+    (response) => {
+        return response
+    },
+    async (error: AxiosError<ErrorResponse>) => {
+        const originalRequest = error.config as InternalAxiosRequestConfig & {
+            _retry?: boolean
+        }
 
-    const headers = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-    };
+        // If error is 401 and we haven't retried yet, try to refresh token
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true
 
-    const config: RequestInit = {
-        ...options,
-        headers,
-    };
+            try {
+                const refreshToken = typeof window !== "undefined"
+                    ? localStorage.getItem("refreshToken")
+                    : null
 
-    const response = await fetch(url, config);
+                if (refreshToken) {
+                    const response = await axios.post<ApiResponse<{ accessToken: string }>>(
+                        `${API_URL}/auth/refresh`,
+                        { refreshToken }
+                    )
 
-    if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new ApiError(data.message || 'An error occurred', response.status, data);
+                    const { accessToken } = response.data.data!
+
+                    if (typeof window !== "undefined") {
+                        localStorage.setItem("accessToken", accessToken)
+                    }
+
+                    if (originalRequest.headers) {
+                        originalRequest.headers.Authorization = `Bearer ${accessToken}`
+                    }
+
+                    return api(originalRequest)
+                }
+            } catch (refreshError) {
+                // Refresh failed, clear tokens and redirect to login
+                if (typeof window !== "undefined") {
+                    localStorage.removeItem("accessToken")
+                    localStorage.removeItem("refreshToken")
+                    localStorage.removeItem("user")
+                    window.location.href = "/login"
+                }
+
+                return Promise.reject(refreshError)
+            }
+        }
+
+        // Handle other errors
+        const errorMessage =
+            error.response?.data?.error ||
+            error.response?.data?.message ||
+            error.message ||
+            "An unexpected error occurred"
+
+        return Promise.reject(new Error(errorMessage))
     }
+)
 
-    return response.json();
-}
+export default api

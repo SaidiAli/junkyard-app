@@ -3,21 +3,35 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 import { Eye, EyeOff, Loader2, Mail, Lock } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { authService } from '@/lib/auth';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginForm() {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+    const { login: authLogin } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-    const [error, setError] = useState('');
+
+    const loginMutation = useMutation({
+        mutationFn: authService.login,
+        onSuccess: (response) => {
+            console.log({response});
+            // Use auth context to update global state
+            authLogin(response.data.tokens.accessToken, response.data.user);
+
+            // Redirect to dashboard
+            router.push('/dashboard');
+        },
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,35 +39,7 @@ export default function LoginForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // setIsLoading(true);
-        setError('');
-
-        router.push('/dashboard');
-
-
-        // try {
-        //     const res = await fetch('http://localhost:5000/api/auth/login', {
-        //         method: 'POST',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify(formData),
-        //     });
-
-        //     const data = await res.json();
-
-        //     if (!res.ok) {
-        //         throw new Error(data.message || 'Login failed');
-        //     }
-
-        //     // Store token (in real app, use secure cookie or context)
-        //     localStorage.setItem('token', data.token);
-        //     localStorage.setItem('user', JSON.stringify(data.user));
-
-        //     router.push('/dashboard');
-        // } catch (err: any) {
-        //     setError(err.message);
-        // } finally {
-        //     setIsLoading(false);
-        // }
+        loginMutation.mutate(formData);
     };
 
     return (
@@ -66,9 +52,9 @@ export default function LoginForm() {
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {error && (
+                    {loginMutation.isError && (
                         <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">
-                            {error}
+                            {(loginMutation.error as any)?.message || 'Login failed. Please try again.'}
                         </div>
                     )}
                     <div className="space-y-2">
@@ -121,8 +107,8 @@ export default function LoginForm() {
                             </button>
                         </div>
                     </div>
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
+                    <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+                        {loginMutation.isPending ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Signing in...

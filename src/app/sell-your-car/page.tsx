@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react';
-import { Upload, Check, Info } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Upload, Info } from 'lucide-react';
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Textarea } from "@/app/components/ui/textarea";
@@ -15,22 +17,36 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
-
-// Data Lists
-const categories = ['Buses', 'Hatchback', 'Mini-Truck', 'Off-Road', 'Pickup', 'Saloon', 'Sedan', 'SUV', 'Truck', 'Van', 'Wagon'];
-const brands = ['Audi', 'BMW', 'Daihatsu', 'Ford', 'Hino', 'Isuzu', 'Land Rover', 'Mazda', 'Mercedes-Benz', 'Mitsubishi', 'Nissan', 'Subaru', 'Suzuki', 'Toyota', 'Volkswagen', 'Volvo'];
-const fuelTypes = ['Diesel', 'Electric', 'Petrol', 'Hybrid', 'LPG Gas'];
-const featuresList = ['ABS', 'Air Conditioner', 'Power Steering', 'Sun Roof', 'Air Bags', 'GPS', 'Security System'];
-const transmissions = ['Automatic', 'Manual'];
-const conditions = ['Foreign Used', 'Locally Used', 'New'];
-const driveTypes = ['2WD', '4WD', 'AWD'];
-const locations = ['Kampala', 'Jinja', 'Arua', 'Gulu', 'Lira', 'Masaka', 'Mbale', 'Mbarara', 'Mpigi', 'Mukono', 'Soroti'];
-const adTypes = ['Free', 'Premium', 'Car dealership'];
+import { adTypes, brands, categories, conditions, driveTypes, featuresList, fuelTypes, locations, transmissions } from '@/lib/data';
+import { ApiResponse } from '@/lib/types';
+import api from '@/lib/api';
 
 // Generate years 1990-2025
 const years = Array.from({ length: 2025 - 1990 + 1 }, (_, i) => (2025 - i).toString());
 
 export default function SellYourCarPage() {
+  const router = useRouter();
+
+  const { data: packages } = useQuery({
+    queryKey: ['packages'],
+    queryFn: async () => {
+      const response = await api.get<ApiResponse<any[]>>("/packages")
+      return response.data.data!
+    },
+  });
+
+  const createListingMutation = useMutation({
+    mutationFn: (data: FormData) => api.post('/listings', data),
+    onSuccess: () => {
+      alert("Ad submitted successfully!");
+      router.push('/dashboard'); // or wherever
+    },
+    onError: (error: any) => {
+      console.error('Submission error:', error);
+      alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);
+    }
+  });
+
   const [formData, setFormData] = useState({
     category: '',
     adType: 'For Sale',
@@ -82,9 +98,46 @@ export default function SellYourCarPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form Submitted:', formData);
-    // Handle form submission logic here (API call)
-    alert("Ad submitted successfully!");
+
+    const data = new FormData();
+
+    // Append fields
+    data.append('category', formData.category.toLowerCase());
+    data.append('typeOfAd', formData.adType);
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    data.append('brand', formData.brand.toLowerCase());
+    data.append('model', formData.model);
+    data.append('yearOfMake', formData.year);
+    data.append('fuelType', formData.fuel.toLowerCase());
+    data.append('mileage', formData.mileage);
+    data.append('color', formData.color);
+    data.append('transmission', formData.transmission.toLowerCase());
+    data.append('condition', formData.condition.toLowerCase().replace(' ', '_'));
+    data.append('engineCapacity', formData.engineCapacity);
+    data.append('drive', formData.drive);
+    data.append('numberPlate', formData.numberPlate);
+    data.append('price', formData.price);
+    data.append('location', formData.location.toLowerCase());
+
+    // Append features
+    formData.features.forEach(feature => {
+      data.append('features[]', feature.toLowerCase().replace(' ', '-'));
+    });
+
+    // Append images
+    if (formData.photos) {
+      Array.from(formData.photos).forEach(photo => {
+        data.append('images', photo);
+      });
+    }
+
+    // Handle packageId
+    if (packages && packages.length > 0) {
+      data.append('packageId', packages[0].id);
+    }
+
+    createListingMutation.mutate(data);
   };
 
   return (
@@ -431,7 +484,9 @@ export default function SellYourCarPage() {
 
           <div className="flex justify-end gap-4">
             <Button variant="outline" type="button" onClick={() => window.history.back()}>Cancel</Button>
-            <Button type="submit" size="lg" className="w-full md:w-auto">Post Ad</Button>
+            <Button type="submit" size="lg" className="w-full md:w-auto" disabled={createListingMutation.isPending}>
+              {createListingMutation.isPending ? 'Posting...' : 'Post Ad'}
+            </Button>
           </div>
         </form>
       </div>

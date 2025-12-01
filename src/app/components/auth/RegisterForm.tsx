@@ -3,16 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 import { Eye, EyeOff, Loader2, Mail, Lock, User, Phone } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Checkbox } from '@/app/components/ui/checkbox';
+import { authService } from '@/lib/auth';
 
 export default function RegisterForm() {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -22,7 +23,14 @@ export default function RegisterForm() {
         password: '',
         isSeller: false,
     });
-    const [error, setError] = useState('');
+
+    const registerMutation = useMutation({
+        mutationFn: authService.register,
+        onSuccess: () => {
+            // Redirect to login with success message
+            router.push('/login?registered=true');
+        },
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,38 +42,17 @@ export default function RegisterForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
-        setError('');
 
-        try {
-            const payload = {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                email: formData.email,
-                phone: formData.phone,
-                password: formData.password,
-                role: formData.isSeller ? 'seller' : undefined,
-            };
+        const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            phone: formData.phone,
+            password: formData.password,
+            role: formData.isSeller ? 'seller' as const : undefined,
+        };
 
-            const res = await fetch('http://localhost:5000/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.message || 'Registration failed');
-            }
-
-            // Auto login or redirect to login
-            router.push('/login?registered=true');
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-        }
+        registerMutation.mutate(payload);
     };
 
     return (
@@ -78,9 +65,9 @@ export default function RegisterForm() {
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {error && (
+                    {registerMutation.isError && (
                         <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">
-                            {error}
+                            {(registerMutation.error as any)?.message || 'Registration failed. Please try again.'}
                         </div>
                     )}
                     <div className="grid grid-cols-2 gap-4">
@@ -190,8 +177,8 @@ export default function RegisterForm() {
                         </Label>
                     </div>
 
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
+                    <Button type="submit" className="w-full" disabled={registerMutation.isPending}>
+                        {registerMutation.isPending ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Creating account...

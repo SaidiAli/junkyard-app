@@ -26,10 +26,11 @@ import {
     DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu';
 import Link from 'next/link';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function MyListingsPage() {
     return (
-        <>
+        <ProtectedRoute>
             <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold md:text-2xl">My Listings</h1>
                 <Button asChild>
@@ -143,6 +144,6 @@ export default function MyListingsPage() {
                     </Table>
                 </CardContent>
             </Card>
-        </>
+        </ProtectedRoute>
     );
 }
