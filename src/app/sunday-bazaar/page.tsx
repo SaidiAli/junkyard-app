@@ -14,7 +14,7 @@ export default function SundayBazaar() {
                     <p className="text-2xl md:text-3xl font-bold text-primary animate-in fade-in slide-in-from-bottom-6 delay-200">Coming Soon</p>
 
                     <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-6 delay-200">
-                        Uganda's biggest monthly car market is coming online. Experience the thrill of live auctions, exclusive deals, and community trading.
+                        Buy or sell in one place; meet real buyers, make the deal, drive away happy.
                     </p>
                 </div>
             </div>

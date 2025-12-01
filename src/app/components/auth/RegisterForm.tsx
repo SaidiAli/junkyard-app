@@ -183,9 +183,10 @@ export default function RegisterForm() {
                             id="isSeller"
                             checked={formData.isSeller}
                             onCheckedChange={handleCheckboxChange}
+                            required
                         />
                         <Label htmlFor="isSeller" className="text-sm font-normal cursor-pointer">
-                            I want to sell cars on Junkyard
+                            I have read and agree to the Terms & Conditions
                         </Label>
                     </div>
 

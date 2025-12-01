@@ -27,23 +27,14 @@ import {
 } from '@/app/components/ui/dropdown-menu';
 import Link from 'next/link';
 
-export default function MyListingsPage() {
+export default function TransactionsPage() {
     return (
         <>
-            <div className="flex items-center justify-between">
-                <h1 className="text-lg font-semibold md:text-2xl">My Listings</h1>
-                <Button asChild>
-                    <Link href="/sell-your-car">
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Add Listing
-                    </Link>
-                </Button>
-            </div>
             <Card>
                 <CardHeader>
-                    <CardTitle>Vehicles</CardTitle>
+                    <CardTitle>My Previous Transactions</CardTitle>
                     <CardDescription>
-                        Manage your vehicle listings and view their performance.
+                        View your previous transactions and manage your vehicle listings.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>

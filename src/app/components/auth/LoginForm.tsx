@@ -25,32 +25,35 @@ export default function LoginForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
+        // setIsLoading(true);
         setError('');
 
-        try {
-            const res = await fetch('http://localhost:5000/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
+        router.push('/dashboard');
 
-            const data = await res.json();
 
-            if (!res.ok) {
-                throw new Error(data.message || 'Login failed');
-            }
+        // try {
+        //     const res = await fetch('http://localhost:5000/api/auth/login', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify(formData),
+        //     });
 
-            // Store token (in real app, use secure cookie or context)
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+        //     const data = await res.json();
 
-            router.push('/dashboard');
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-        }
+        //     if (!res.ok) {
+        //         throw new Error(data.message || 'Login failed');
+        //     }
+
+        //     // Store token (in real app, use secure cookie or context)
+        //     localStorage.setItem('token', data.token);
+        //     localStorage.setItem('user', JSON.stringify(data.user));
+
+        //     router.push('/dashboard');
+        // } catch (err: any) {
+        //     setError(err.message);
+        // } finally {
+        //     setIsLoading(false);
+        // }
     };
 
     return (
