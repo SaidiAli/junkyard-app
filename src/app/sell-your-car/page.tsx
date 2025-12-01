@@ -133,10 +133,10 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="title">Title</Label>
-                <Input 
-                  id="title" 
-                  name="title" 
-                  placeholder="e.g., Clean Toyota Corolla 2020" 
+                <Input
+                  id="title"
+                  name="title"
+                  placeholder="e.g., Clean Toyota Corolla 2020"
                   value={formData.title}
                   onChange={handleInputChange}
                   required
@@ -145,10 +145,10 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="description">Description</Label>
-                <Textarea 
-                  id="description" 
-                  name="description" 
-                  placeholder="Describe the condition, history, and key selling points..." 
+                <Textarea
+                  id="description"
+                  name="description"
+                  placeholder="Describe the condition, history, and key selling points..."
                   className="h-32"
                   value={formData.description}
                   onChange={handleInputChange}
@@ -181,10 +181,10 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="model">Car Model</Label>
-                <Input 
-                  id="model" 
-                  name="model" 
-                  placeholder="e.g., Corolla" 
+                <Input
+                  id="model"
+                  name="model"
+                  placeholder="e.g., Corolla"
                   value={formData.model}
                   onChange={handleInputChange}
                   required
@@ -249,11 +249,11 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="mileage">Mileage (km)</Label>
-                <Input 
-                  id="mileage" 
-                  name="mileage" 
-                  type="number" 
-                  placeholder="0" 
+                <Input
+                  id="mileage"
+                  name="mileage"
+                  type="number"
+                  placeholder="0"
                   value={formData.mileage}
                   onChange={handleInputChange}
                 />
@@ -261,10 +261,10 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="color">Color</Label>
-                <Input 
-                  id="color" 
-                  name="color" 
-                  placeholder="e.g., Silver" 
+                <Input
+                  id="color"
+                  name="color"
+                  placeholder="e.g., Silver"
                   value={formData.color}
                   onChange={handleInputChange}
                 />
@@ -272,10 +272,10 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="engineCapacity">Engine Capacity (cc)</Label>
-                <Input 
-                  id="engineCapacity" 
-                  name="engineCapacity" 
-                  placeholder="e.g., 2000" 
+                <Input
+                  id="engineCapacity"
+                  name="engineCapacity"
+                  placeholder="e.g., 2000"
                   value={formData.engineCapacity}
                   onChange={handleInputChange}
                 />
@@ -297,12 +297,14 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="numberPlate">Number Plate</Label>
-                <Input 
-                  id="numberPlate" 
-                  name="numberPlate" 
-                  placeholder="e.g., UBA 123A" 
+                <Input
+                  id="numberPlate"
+                  name="numberPlate"
+                  placeholder="e.g., UBA 123A"
                   value={formData.numberPlate}
                   onChange={handleInputChange}
+                  maxLength={10}
+                  minLength={7}
                 />
               </div>
             </CardContent>
@@ -319,8 +321,8 @@ export default function SellYourCarPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {featuresList.map((feature) => (
                     <div key={feature} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={`feature-${feature}`} 
+                      <Checkbox
+                        id={`feature-${feature}`}
                         onCheckedChange={(checked: any) => handleCheckboxChange(feature, checked as boolean)}
                       />
                       <label
@@ -337,12 +339,12 @@ export default function SellYourCarPage() {
               <div className="space-y-2">
                 <Label htmlFor="photos">Photos</Label>
                 <div className="border-2 border-dashed border-input rounded-lg p-8 text-center hover:bg-accent/50 transition-colors">
-                  <Input 
-                    id="photos" 
-                    type="file" 
-                    multiple 
-                    accept="image/*" 
-                    className="hidden" 
+                  <Input
+                    id="photos"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    className="hidden"
                     onChange={handleFileChange}
                   />
                   <Label htmlFor="photos" className="cursor-pointer flex flex-col items-center gap-2">
@@ -368,11 +370,11 @@ export default function SellYourCarPage() {
             <CardContent className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="price">Price (UGX)</Label>
-                <Input 
-                  id="price" 
-                  name="price" 
-                  type="number" 
-                  placeholder="e.g., 25000000" 
+                <Input
+                  id="price"
+                  name="price"
+                  type="number"
+                  placeholder="e.g., 25000000"
                   value={formData.price}
                   onChange={handleInputChange}
                   required
@@ -396,10 +398,10 @@ export default function SellYourCarPage() {
               <div className="space-y-2">
                 <Label htmlFor="sellerPhone">Seller Phone Number</Label>
                 <div className="relative">
-                  <Input 
-                    id="sellerPhone" 
-                    name="sellerPhone" 
-                    value={formData.sellerPhone} 
+                  <Input
+                    id="sellerPhone"
+                    name="sellerPhone"
+                    value={formData.sellerPhone}
                     onChange={handleInputChange}
                     className="pl-10"
                     readOnly // Assuming default fill implies read-only or just pre-filled
@@ -412,10 +414,10 @@ export default function SellYourCarPage() {
               <div className="space-y-2">
                 <Label htmlFor="sellerEmail">Seller Email</Label>
                 <div className="relative">
-                  <Input 
-                    id="sellerEmail" 
-                    name="sellerEmail" 
-                    value={formData.sellerEmail} 
+                  <Input
+                    id="sellerEmail"
+                    name="sellerEmail"
+                    value={formData.sellerEmail}
                     onChange={handleInputChange}
                     className="pl-10"
                     readOnly
