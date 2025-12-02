@@ -24,6 +24,15 @@ import api from '@/lib/api';
 // Generate years 1990-2025
 const years = Array.from({ length: 2025 - 1990 + 1 }, (_, i) => (2025 - i).toString());
 
+// Helper to slugify brand names for the API
+const slugifyBrand = (brand: string) => {
+  const lowercased = brand.toLowerCase();
+  if (lowercased === 'mercedes-benz') {
+    return 'mercedes';
+  }
+  return lowercased.replace(/\s+/g, '-');
+};
+
 export default function SellYourCarPage() {
   const router = useRouter();
 
@@ -36,20 +45,28 @@ export default function SellYourCarPage() {
   });
 
   const createListingMutation = useMutation({
-    mutationFn: (data: FormData) => api.post('/listings', data),
+    mutationFn: (data: FormData) => api.post('/listings', data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
     onSuccess: () => {
       alert("Ad submitted successfully!");
-      router.push('/dashboard'); // or wherever
+      router.push('/dashboard/listings');
     },
     onError: (error: any) => {
       console.error('Submission error:', error);
-      alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);
+      const errorData = error.response?.data;
+      if (errorData && errorData.errors) {
+        const errorMessages = errorData.errors.map((err: { field: string, message: string }) => `${err.field}: ${err.message}`).join('\n');
+        alert(`Failed to submit ad:\n${errorMessages}`);
+      } else {
+        alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);
+      }
     }
   });
 
   const [formData, setFormData] = useState({
     category: '',
-    adType: 'For Sale',
+    adType: 'Free', // Changed from 'For Sale' to a valid adType
     title: '',
     description: '',
     brand: '',
@@ -98,6 +115,24 @@ export default function SellYourCarPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Frontend validation
+    if (formData.title.length < 10) {
+      alert("Title must be at least 10 characters long.");
+      return;
+    }
+    if (formData.description.length < 50) {
+      alert("Description must be at least 50 characters long.");
+      return;
+    }
+    if (!formData.photos || formData.photos.length === 0) {
+      alert("Please upload at least one photo of the vehicle.");
+      return;
+    }
+    if (!formData.brand) {
+      alert("Please select a car brand.");
+      return;
+    }
 
     const data = new FormData();
 
@@ -106,7 +141,7 @@ export default function SellYourCarPage() {
     data.append('typeOfAd', formData.adType);
     data.append('title', formData.title);
     data.append('description', formData.description);
-    data.append('brand', formData.brand.toLowerCase());
+    data.append('brand', slugifyBrand(formData.brand));
     data.append('model', formData.model);
     data.append('yearOfMake', formData.year);
     data.append('fuelType', formData.fuel.toLowerCase());
@@ -136,6 +171,11 @@ export default function SellYourCarPage() {
     if (packages && packages.length > 0) {
       data.append('packageId', packages[0].id);
     }
+    
+    // Log FormData for debugging
+    for (let [key, value] of data.entries()) {
+      console.log(`${key}: ${value}`);
+    }
 
     createListingMutation.mutate(data);
   };
@@ -158,7 +198,7 @@ export default function SellYourCarPage() {
             <CardContent className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
-                <Select onValueChange={(value) => handleSelectChange('category', value)}>
+                <Select onValueChange={(value) => handleSelectChange('category', value)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Category" />
                   </SelectTrigger>
@@ -172,7 +212,7 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="adType">Type of Ad</Label>
-                <Select defaultValue="For Sale" onValueChange={(value) => handleSelectChange('adType', value)}>
+                <Select value={formData.adType} onValueChange={(value) => handleSelectChange('adType', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Ad Type" />
                   </SelectTrigger>
@@ -193,6 +233,7 @@ export default function SellYourCarPage() {
                   value={formData.title}
                   onChange={handleInputChange}
                   required
+                  minLength={10}
                 />
               </div>
 
@@ -206,6 +247,7 @@ export default function SellYourCarPage() {
                   value={formData.description}
                   onChange={handleInputChange}
                   required
+                  minLength={50}
                 />
               </div>
             </CardContent>
@@ -220,7 +262,7 @@ export default function SellYourCarPage() {
             <CardContent className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="brand">Car Brand</Label>
-                <Select onValueChange={(value) => handleSelectChange('brand', value)}>
+                <Select onValueChange={(value) => handleSelectChange('brand', value)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Brand" />
                   </SelectTrigger>
@@ -246,7 +288,7 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="year">Year of Make</Label>
-                <Select onValueChange={(value) => handleSelectChange('year', value)}>
+                <Select onValueChange={(value) => handleSelectChange('year', value)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Year" />
                   </SelectTrigger>
@@ -260,7 +302,7 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="fuel">Fuel Type</Label>
-                <Select onValueChange={(value) => handleSelectChange('fuel', value)}>
+                <Select onValueChange={(value) => handleSelectChange('fuel', value)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Fuel Type" />
                   </SelectTrigger>
@@ -274,7 +316,7 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="transmission">Transmission</Label>
-                <Select onValueChange={(value) => handleSelectChange('transmission', value)}>
+                <Select onValueChange={(value) => handleSelectChange('transmission', value)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Transmission" />
                   </SelectTrigger>
@@ -288,7 +330,7 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="condition">Condition</Label>
-                <Select onValueChange={(value) => handleSelectChange('condition', value)}>
+                <Select onValueChange={(value) => handleSelectChange('condition', value)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Condition" />
                   </SelectTrigger>
@@ -309,6 +351,7 @@ export default function SellYourCarPage() {
                   placeholder="0"
                   value={formData.mileage}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
@@ -320,6 +363,7 @@ export default function SellYourCarPage() {
                   placeholder="e.g., Silver"
                   value={formData.color}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
@@ -328,9 +372,11 @@ export default function SellYourCarPage() {
                 <Input
                   id="engineCapacity"
                   name="engineCapacity"
+                  type="number"
                   placeholder="e.g., 2000"
                   value={formData.engineCapacity}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
@@ -399,6 +445,7 @@ export default function SellYourCarPage() {
                     accept="image/*"
                     className="hidden"
                     onChange={handleFileChange}
+                    required
                   />
                   <Label htmlFor="photos" className="cursor-pointer flex flex-col items-center gap-2">
                     <Upload className="h-10 w-10 text-muted-foreground" />
@@ -436,7 +483,7 @@ export default function SellYourCarPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="location">Location</Label>
-                <Select onValueChange={(value) => handleSelectChange('location', value)}>
+                <Select onValueChange={(value) => handleSelectChange('location', value)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Location" />
                   </SelectTrigger>

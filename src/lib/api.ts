@@ -26,6 +26,11 @@ api.interceptors.request.use(
             config.headers.Authorization = `Bearer ${accessToken}`
         }
 
+        // If the data is FormData, remove Content-Type header to let the browser set it automatically
+        if (config.data instanceof FormData) {
+            delete config.headers['Content-Type'];
+        }
+
         return config
     },
     (error) => {
