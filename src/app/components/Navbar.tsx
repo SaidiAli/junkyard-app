@@ -10,17 +10,27 @@ import {
   SheetHeader,
 } from "./ui/sheet";
 import Link from "next/link";
-
-const navItems = [
-  { label: 'Sunday Bazaar', href: '/sunday-bazaar' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Sell Your Car', href: '/sell-your-car' },
-  { label: 'Login', href: '/login' },
-  { label: 'Register', href: '/register' }
-];
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, user } = useAuth();
+
+  // Define navigation items based on auth status
+  const publicNavItems = [
+    { label: 'Sunday Bazaar', href: '/sunday-bazaar' },
+    { label: 'Pricing', href: '/pricing' },
+    { label: 'Sell Your Car', href: '/sell-your-car' },
+  ];
+
+  const authNavItems = isAuthenticated
+    ? [{ label: 'My Account', href: '/dashboard' }]
+    : [
+      { label: 'Login', href: '/login' },
+      { label: 'Register', href: '/register' }
+    ];
+
+  const navItems = [...publicNavItems, ...authNavItems];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">

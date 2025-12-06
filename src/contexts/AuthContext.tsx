@@ -18,7 +18,7 @@ interface AuthContextType {
     token: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
-    login: (token: string, user: User) => void;
+    login: (accessToken: string, refreshToken: string, user: User) => void;
     logout: () => void;
     updateUser: (user: User) => void;
 }
@@ -54,11 +54,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         initAuth();
     }, []);
 
-    const login = (newToken: string, newUser: User) => {
-        setToken(newToken);
+    const login = (accessToken: string, refreshToken: string, newUser: User) => {
+        setToken(accessToken);
         setUser(newUser);
-        localStorage.setItem('token', newToken);
-        localStorage.setItem('user', JSON.stringify(newUser));
+        authService.setTokens(accessToken, refreshToken);
+        authService.setUser(newUser);
     };
 
     const logout = () => {

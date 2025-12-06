@@ -24,9 +24,13 @@ export default function LoginForm() {
     const loginMutation = useMutation({
         mutationFn: authService.login,
         onSuccess: (response) => {
-            console.log({response});
+            console.log({ response });
             // Use auth context to update global state
-            authLogin(response.data.tokens.accessToken, response.data.user);
+            authLogin(
+                response.data.tokens.accessToken,
+                response.data.tokens.refreshToken,
+                response.data.user
+            );
 
             // Redirect to dashboard
             router.push('/dashboard');

@@ -46,6 +46,7 @@ export const authService = {
 
     logout: () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
     },
 
@@ -56,12 +57,32 @@ export const authService = {
         return null;
     },
 
+    getRefreshToken: (): string | null => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('refreshToken');
+        }
+        return null;
+    },
+
+    setTokens: (accessToken: string, refreshToken: string) => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('token', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+        }
+    },
+
     getUser: () => {
         if (typeof window !== 'undefined') {
             const user = localStorage.getItem('user');
             return user ? JSON.parse(user) : null;
         }
         return null;
+    },
+
+    setUser: (user: any) => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('user', JSON.stringify(user));
+        }
     },
 
     isAuthenticated: (): boolean => {

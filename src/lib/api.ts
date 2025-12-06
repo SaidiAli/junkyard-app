@@ -66,7 +66,7 @@ api.interceptors.response.use(
                     const { accessToken } = response.data.data!
 
                     if (typeof window !== "undefined") {
-                        localStorage.setItem("accessToken", accessToken)
+                        localStorage.setItem("token", accessToken)
                     }
 
                     if (originalRequest.headers) {
@@ -78,7 +78,7 @@ api.interceptors.response.use(
             } catch (refreshError) {
                 // Refresh failed, clear tokens and redirect to login
                 if (typeof window !== "undefined") {
-                    localStorage.removeItem("accessToken")
+                    localStorage.removeItem("token")
                     localStorage.removeItem("refreshToken")
                     localStorage.removeItem("user")
                     window.location.href = "/login"
