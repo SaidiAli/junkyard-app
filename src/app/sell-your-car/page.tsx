@@ -194,7 +194,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map(cat => (
-                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                      <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -208,7 +208,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {adTypes.map(type => (
-                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                      <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -258,7 +258,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {brands.map(brand => (
-                      <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                      <SelectItem key={brand.value} value={brand.value}>{brand.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -312,7 +312,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {transmissions.map(trans => (
-                      <SelectItem key={trans} value={trans}>{trans}</SelectItem>
+                      <SelectItem key={trans.value} value={trans.value}>{trans.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -326,7 +326,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {conditions.map(cond => (
-                      <SelectItem key={cond} value={cond}>{cond}</SelectItem>
+                      <SelectItem key={cond.value} value={cond.value}>{cond.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -378,7 +378,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {driveTypes.map(drive => (
-                      <SelectItem key={drive} value={drive}>{drive}</SelectItem>
+                      <SelectItem key={drive.value} value={drive.value}>{drive.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -409,16 +409,16 @@ export default function SellYourCarPage() {
                 <Label>Features</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {featuresList.map((feature) => (
-                    <div key={feature} className="flex items-center space-x-2">
+                    <div key={feature.value} className="flex items-center space-x-2">
                       <Checkbox
-                        id={`feature-${feature}`}
-                        onCheckedChange={(checked: any) => handleCheckboxChange(feature, checked as boolean)}
+                        id={`feature-${feature.value}`}
+                        onCheckedChange={(checked: any) => handleCheckboxChange(feature.value, checked as boolean)}
                       />
                       <label
-                        htmlFor={`feature-${feature}`}
+                        htmlFor={`feature-${feature.value}`}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
-                        {feature}
+                        {feature.label}
                       </label>
                     </div>
                   ))}
@@ -479,7 +479,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {locations.map(loc => (
-                      <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                      <SelectItem key={loc.value} value={loc.value}>{loc.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

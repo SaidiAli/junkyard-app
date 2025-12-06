@@ -48,12 +48,98 @@ export const plans: Plan[] = [
 ];
 
 // Data Lists
-export const categories = ['Buses', 'Hatchback', 'Mini-Truck', 'Off-Road', 'Pickup', 'Saloon', 'Sedan', 'SUV', 'Truck', 'Van', 'Wagon'];
-export const brands = ['Audi', 'BMW', 'Daihatsu', 'Ford', 'Hino', 'Isuzu', 'Land Rover', 'Mazda', 'Mercedes-Benz', 'Mitsubishi', 'Nissan', 'Subaru', 'Suzuki', 'Toyota', 'Volkswagen', 'Volvo'];
-export const fuelTypes = [{ value: 'diesel', label: 'Diesel' }, { value: 'electric', label: 'Electric' }, { value: 'petrol', label: 'Petrol' }, { value: 'hybrid', label: 'Hybrid' }, { value: 'lpg', label: 'LPG Gas' }];
-export const featuresList = ['ABS', 'Air Conditioner', 'Power Steering', 'Sun Roof', 'Air Bags', 'GPS', 'Security System'];
-export const transmissions = ['Automatic', 'Manual'];
-export const conditions = ['Foreign Used', 'Locally Used', 'New'];
-export const driveTypes = ['2WD', '4WD', 'AWD'];
-export const locations = ['Kampala', 'Jinja', 'Arua', 'Gulu', 'Lira', 'Masaka', 'Mbale', 'Mbarara', 'Mpigi', 'Mukono', 'Soroti'];
-export const adTypes = ['Free', 'Premium', 'Car dealership'];
+export const fuelTypes = [
+    { value: 'diesel', label: 'Diesel' },
+    { value: 'electric', label: 'Electric' },
+    { value: 'petrol', label: 'Petrol' },
+    { value: 'hybrid', label: 'Hybrid' },
+    { value: 'lpg-gas', label: 'LPG Gas' }
+];
+
+export const categories = [
+    { value: 'buses', label: 'Buses' },
+    { value: 'hatchback', label: 'Hatchback' },
+    { value: 'mini-truck', label: 'Mini-Truck' },
+    { value: 'off-road', label: 'Off-Road' },
+    { value: 'pickup', label: 'Pickup' },
+    { value: 'saloon', label: 'Saloon' },
+    { value: 'sedan', label: 'Sedan' },
+    { value: 'suv', label: 'SUV' },
+    { value: 'truck', label: 'Truck' },
+    { value: 'van', label: 'Van' },
+    { value: 'wagon', label: 'Wagon' }
+];
+
+export const brands = [
+    { value: 'audi', label: 'Audi' },
+    { value: 'bmw', label: 'BMW' },
+    { value: 'daihatsu', label: 'Daihatsu' },
+    { value: 'ford', label: 'Ford' },
+    { value: 'hino', label: 'Hino' },
+    { value: 'isuzu', label: 'Isuzu' },
+    { value: 'land-rover', label: 'Land Rover' },
+    { value: 'mazda', label: 'Mazda' },
+    { value: 'mercedes', label: 'Mercedes' },
+    { value: 'mitsubishi', label: 'Mitsubishi' },
+    { value: 'nissan', label: 'Nissan' },
+    { value: 'subaru', label: 'Subaru' },
+    { value: 'suzuki', label: 'Suzuki' },
+    { value: 'toyota', label: 'Toyota' },
+    { value: 'volkswagen', label: 'Volkswagen' },
+    { value: 'volvo', label: 'Volvo' }
+];
+
+export const featuresList = [
+    { value: 'abs', label: 'ABS' },
+    { value: 'air-conditioner', label: 'Air Conditioner' },
+    { value: 'power-steering', label: 'Power Steering' },
+    { value: 'sun-roof', label: 'Sun Roof' },
+    { value: 'air-bags', label: 'Air Bags' },
+    { value: 'gps', label: 'GPS' },
+    { value: 'security-system', label: 'Security System' },
+    { value: 'power-windows', label: 'Power Windows' },
+    { value: 'rear-camera', label: 'Rear Camera' },
+    { value: 'bluetooth', label: 'Bluetooth' },
+    { value: 'usb-port', label: 'USB Port' },
+    { value: 'cruise-control', label: 'Cruise Control' },
+    { value: 'keyless-entry', label: 'Keyless Entry' },
+    { value: 'leather-seats', label: 'Leather Seats' },
+    { value: 'alloy-wheels', label: 'Alloy Wheels' }
+];
+
+export const transmissions = [
+    { value: 'manual', label: 'Manual' },
+    { value: 'automatic', label: 'Automatic' }
+];
+
+export const conditions = [
+    { value: 'foreign_used', label: 'Foreign Used' },
+    { value: 'locally_used', label: 'Locally Used' },
+    { value: 'new', label: 'New' }
+];
+
+export const driveTypes = [
+    { value: '2WD', label: '2WD' },
+    { value: '4WD', label: '4WD' },
+    { value: 'AWD', label: 'AWD' }
+];
+
+export const locations = [
+    { value: 'kampala', label: 'Kampala' },
+    { value: 'jinja', label: 'Jinja' },
+    { value: 'arua', label: 'Arua' },
+    { value: 'gulu', label: 'Gulu' },
+    { value: 'lira', label: 'Lira' },
+    { value: 'masaka', label: 'Masaka' },
+    { value: 'mbale', label: 'Mbale' },
+    { value: 'mbarara', label: 'Mbarara' },
+    { value: 'mpigi', label: 'Mpigi' },
+    { value: 'mukono', label: 'Mukono' },
+    { value: 'soroti', label: 'Soroti' }
+];
+
+export const adTypes = [
+    { value: 'free', label: 'Free' },
+    { value: 'premium', label: 'Premium' },
+    { value: 'car-dealership', label: 'Car Dealership' }
+];
