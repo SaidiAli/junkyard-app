@@ -9,13 +9,7 @@ import { Input } from "@/app/components/ui/input";
 import { Textarea } from "@/app/components/ui/textarea";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import { Label } from "@/app/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
 import { adTypes, brands, categories, conditions, driveTypes, featuresList, fuelTypes, locations, transmissions } from '@/lib/data';
 import { ApiResponse } from '@/lib/types';
@@ -85,7 +79,7 @@ export default function SellYourCarPage() {
     sellerPhone: '0777 123 456', // Default/Mock value
     sellerEmail: 'user@example.com', // Default/Mock value
     features: [] as string[],
-    photos: null as FileList | null
+    images: null as FileList | null
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -109,13 +103,14 @@ export default function SellYourCarPage() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFormData(prev => ({ ...prev, photos: e.target.files }));
+      console.log("files", e.target.files)
+      setFormData(prev => ({ ...prev, images: e.target.files }));
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Frontend validation
     if (formData.title.length < 10) {
       alert("Title must be at least 10 characters long.");
@@ -125,7 +120,7 @@ export default function SellYourCarPage() {
       alert("Description must be at least 50 characters long.");
       return;
     }
-    if (!formData.photos || formData.photos.length === 0) {
+    if (!formData.images || formData.images.length === 0) {
       alert("Please upload at least one photo of the vehicle.");
       return;
     }
@@ -161,20 +156,15 @@ export default function SellYourCarPage() {
     });
 
     // Append images
-    if (formData.photos) {
-      Array.from(formData.photos).forEach(photo => {
-        data.append('images', photo);
+    if (formData.images) {
+      Array.from(formData.images).forEach(image => {
+        data.append('images', image);
       });
     }
 
     // Handle packageId
     if (packages && packages.length > 0) {
       data.append('packageId', packages[0].id);
-    }
-    
-    // Log FormData for debugging
-    for (let [key, value] of data.entries()) {
-      console.log(`${key}: ${value}`);
     }
 
     createListingMutation.mutate(data);
@@ -308,7 +298,7 @@ export default function SellYourCarPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {fuelTypes.map(fuel => (
-                      <SelectItem key={fuel} value={fuel}>{fuel}</SelectItem>
+                      <SelectItem key={fuel.value} value={fuel.value}>{fuel.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -436,10 +426,10 @@ export default function SellYourCarPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="photos">Photos</Label>
+                <Label htmlFor="images">Photos</Label>
                 <div className="border-2 border-dashed border-input rounded-lg p-8 text-center hover:bg-accent/50 transition-colors">
                   <Input
-                    id="photos"
+                    id="images"
                     type="file"
                     multiple
                     accept="image/*"
@@ -447,14 +437,14 @@ export default function SellYourCarPage() {
                     onChange={handleFileChange}
                     required
                   />
-                  <Label htmlFor="photos" className="cursor-pointer flex flex-col items-center gap-2">
+                  <Label htmlFor="images" className="cursor-pointer flex flex-col items-center gap-2">
                     <Upload className="h-10 w-10 text-muted-foreground" />
                     <span className="text-lg font-medium">Click to upload photos</span>
                     <span className="text-sm text-muted-foreground">SVG, PNG, JPG or GIF (MAX. 800x400px)</span>
                   </Label>
-                  {formData.photos && (
+                  {formData.images && (
                     <div className="mt-4 text-sm text-primary font-medium">
-                      {formData.photos.length} files selected
+                      {formData.images.length} files selected
                     </div>
                   )}
                 </div>

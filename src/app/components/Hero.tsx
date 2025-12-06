@@ -35,17 +35,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* Overlapping Car Image at Bottom */}
-      {/* <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 w-full max-w-6xl pointer-events-none -mb-16 md:-mb-24 lg:-mb-32">
-        <Image
-          src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764077539/junkyard/dtac7o5rjijkbi30gyrt.png"
-          alt="Featured car"
-          width={1200}
-          height={400}
-          className="w-full h-auto"
-        />
-      </div> */}
     </section>
   );
 };

@@ -50,7 +50,7 @@ export const plans: Plan[] = [
 // Data Lists
 export const categories = ['Buses', 'Hatchback', 'Mini-Truck', 'Off-Road', 'Pickup', 'Saloon', 'Sedan', 'SUV', 'Truck', 'Van', 'Wagon'];
 export const brands = ['Audi', 'BMW', 'Daihatsu', 'Ford', 'Hino', 'Isuzu', 'Land Rover', 'Mazda', 'Mercedes-Benz', 'Mitsubishi', 'Nissan', 'Subaru', 'Suzuki', 'Toyota', 'Volkswagen', 'Volvo'];
-export const fuelTypes = ['Diesel', 'Electric', 'Petrol', 'Hybrid', 'LPG Gas'];
+export const fuelTypes = [{ value: 'diesel', label: 'Diesel' }, { value: 'electric', label: 'Electric' }, { value: 'petrol', label: 'Petrol' }, { value: 'hybrid', label: 'Hybrid' }, { value: 'lpg', label: 'LPG Gas' }];
 export const featuresList = ['ABS', 'Air Conditioner', 'Power Steering', 'Sun Roof', 'Air Bags', 'GPS', 'Security System'];
 export const transmissions = ['Automatic', 'Manual'];
 export const conditions = ['Foreign Used', 'Locally Used', 'New'];
