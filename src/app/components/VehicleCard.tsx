@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { Gauge, Fuel, Users } from "lucide-react";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 
 interface VehicleCardProps {
+  id: string;
   image: string;
   name: string;
   price: string;
@@ -12,58 +14,57 @@ interface VehicleCardProps {
   seats?: string;
 }
 
-const VehicleCard = ({ image, name, price, year, mileage, fuel, seats }: VehicleCardProps) => {
+const VehicleCard = ({ id, image, name, price, year, mileage, fuel, seats }: VehicleCardProps) => {
   return (
-    <Card className="group overflow-hidden hover:shadow-hover transition-all duration-300 border-border">
-      <div className="relative overflow-hidden">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
-        {year && (
-          <div className="absolute bottom-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
-            {year}
-          </div>
-        )}
-      </div>
-      <CardContent className="p-6 space-y-4">
-        <div>
-          <h3 className="text-xl font-bold mb-2">{name}</h3>
-          <p className="text-2xl font-bold text-primary">{price}</p>
+    <Link href={`/shop/${id}`}>
+      <Card className="group overflow-hidden hover:shadow-hover transition-all duration-300 border-border h-full flex flex-col">
+        <div className="relative overflow-hidden aspect-[4/3]">
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+          {year && (
+            <div className="absolute bottom-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+              {year}
+            </div>
+          )}
         </div>
-        {(mileage || fuel || seats) && (
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            {mileage && (
-              <div className="flex items-center gap-1">
-                <Gauge className="h-4 w-4" />
-                <span>{mileage}</span>
-              </div>
-            )}
-            {fuel && (
-              <div className="flex items-center gap-1">
-                <Fuel className="h-4 w-4" />
-                <span>{fuel}</span>
-              </div>
-            )}
-            {seats && (
-              <div className="flex items-center gap-1">
-                <Users className="h-4 w-4" />
-                <span>{seats}</span>
-              </div>
-            )}
+        <CardContent className="p-6 space-y-4 flex-1">
+          <div>
+            <h3 className="text-xl font-bold mb-2 line-clamp-1">{name}</h3>
+            <p className="text-2xl font-bold text-primary">{price}</p>
           </div>
-        )}
-      </CardContent>
-      <CardFooter className="p-6 pt-0 gap-2">
-        <Button className="flex-1">
-          View Details
-        </Button>
-        <Button className="flex-1">
-          Call Now
-        </Button>
-      </CardFooter>
-    </Card>
+          {(mileage || fuel || seats) && (
+            <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+              {mileage && (
+                <div className="flex items-center gap-1">
+                  <Gauge className="h-4 w-4" />
+                  <span>{mileage}</span>
+                </div>
+              )}
+              {fuel && (
+                <div className="flex items-center gap-1">
+                  <Fuel className="h-4 w-4" />
+                  <span>{fuel}</span>
+                </div>
+              )}
+              {seats && (
+                <div className="flex items-center gap-1">
+                  <Users className="h-4 w-4" />
+                  <span>{seats}</span>
+                </div>
+              )}
+            </div>
+          )}
+        </CardContent>
+        <CardFooter className="p-6 pt-0 gap-2 mt-auto">
+          <Button className="flex-1 w-full" variant="default">
+            View Details
+          </Button>
+        </CardFooter>
+      </Card>
+    </Link>
   );
 };
 

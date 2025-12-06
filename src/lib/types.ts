@@ -62,8 +62,8 @@ export interface Listing {
     typeOfAd: string;
     brand: Brand;
     model: string;
-    yearOfMake: number;
-    mileage: number;
+    yearOfMake: string;
+    mileage: string;
     fuelType: string;
     transmission: string;
     condition: string;
@@ -77,14 +77,29 @@ export interface Listing {
     title: string;
     description: string;
     images: string[];
-    sellerPhone: string;
-    sellerEmail: string;
+    sellerPhone?: string;
+    sellerEmail?: string;
     status: ListingStatus;
     isActive: boolean;
     isFeatured: boolean;
     views: number;
     createdAt: string; // Serialized date
     updatedAt: string; // Serialized date
+}
+
+export interface ListingFilter {
+    category?: Category;
+    brand?: Brand;
+    location?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    yearOfMake?: string;
+    fuelType?: string;
+    transmission?: string;
+    condition?: string;
+    search?: string;
+    limit?: number;
+    offset?: number;
 }
 
 export interface Payment {

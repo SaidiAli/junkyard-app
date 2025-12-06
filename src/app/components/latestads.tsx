@@ -1,54 +1,65 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import VehicleCard from "./VehicleCard";
+import { Listing } from "@/lib/types";
+import { ListingService } from "@/lib/services/listing.service";
 
 const LatestAds = () => {
-  const vehicles = [
-    {
-      image: "/imgs/car-white-suv.jpg",
-      name: "BMW X7 M Sport",
-      price: "UGX 89,990,000",
-      year: "2024",
-      mileage: "5,420 km",
-      fuel: "Hybrid",
-      seats: "7 Seats",
-    },
-    {
-      image: "imgs/car-red-1.jpg",
-      name: "Mercedes AMG GT",
-      price: "UGX 145,000,000",
-      year: "2024",
-      mileage: "2,100 km",
-      fuel: "Petrol",
-      seats: "2 Seats",
-    },
-    {
-      image: "/imgs/car-blue.jpg",
-      name: "Audi RS6 Avant",
-      price: "UGX 125,500,000",
-      year: "2023",
-      mileage: "8,900 km",
-      fuel: "Petrol",
-      seats: "5 Seats",
-    },
-    {
-      image: "/imgs/car-silver.jpg",
-      name: "Tesla Model S Plaid",
-      price: "UGX 112,000,000",
-      year: "2024",
-      mileage: "1,500 km",
-      fuel: "Electric",
-      seats: "5 Seats",
-    },
-  ];
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLatest = async () => {
+      try {
+        const response = await ListingService.getLatest();
+        setListings(response.data || []);
+      } catch (error) {
+        console.error("Failed to fetch latest ads", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatest();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Latest Vehicles</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-[400px] bg-muted animate-pulse rounded-lg"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (listings.length === 0) return null;
 
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Featured Vehicles</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Latest Vehicles</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {vehicles.map((vehicle, index) => (
-            <VehicleCard key={index} {...vehicle} />
+          {listings.map((listing) => (
+            <VehicleCard
+              key={listing.id}
+              id={listing.id}
+              image={listing.images[0] || "/imgs/car-placeholder.jpg"}
+              name={`${listing.title}`}
+              price={listing.price}
+              year={listing.yearOfMake?.toString()}
+              mileage={listing.mileage?.toString()}
+              fuel={listing.fuelType}
+              seats={listing.features.find(f => f.includes('Seats')) || undefined}
+            />
           ))}
         </div>
       </div>

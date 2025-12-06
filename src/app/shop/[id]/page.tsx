@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
     MapPin,
@@ -13,7 +13,8 @@ import {
     Share2,
     Heart,
     Phone,
-    MessageCircle
+    MessageCircle,
+    Loader2
 } from 'lucide-react';
 
 import { Button } from "@/app/components/ui/button";
@@ -37,106 +38,81 @@ import {
     CarouselPrevious,
 } from "@/app/components/ui/carousel";
 import VehicleCard from "@/app/components/VehicleCard";
-
-// Mock Data for Single Listing
-const carDetails = {
-    id: "1",
-    title: "2018 Mazda Demio for sale",
-    price: "UGX 1,075,000",
-    location: "Mombasa, Kenya",
-    condition: "Foreign Used",
-    posted: "2 days ago",
-    images: [
-        "/imgs/car-silver.jpg",
-        "/imgs/car-red-1.jpg",
-        "/imgs/car-blue.jpg",
-        "/imgs/car-silver.jpg",
-        "/imgs/car-white-suv.jpg"
-    ],
-    specs: {
-        make: "Mazda",
-        model: "Demio",
-        year: "2018",
-        mileage: "85,000 km",
-        transmission: "Automatic",
-        fuel: "Petrol",
-        engineSize: "1300cc",
-        driveType: "2WD",
-        color: "Blue",
-        bodyType: "Hatchback",
-        interior: "Cloth",
-        doorCount: "5"
-    },
-    features: [
-        "ABS", "Air Conditioning", "Airbags", "Power Steering", "Power Windows",
-        "AM/FM Radio", "CD Player", "Alloy Wheels", "Fog Lights", "Keyless Entry",
-        "Power Mirrors", "Rear Spoiler", "Traction Control", "Cup Holders"
-    ],
-    description: `
-    Clean Mazda Demio 2018 model available for immediate sale. 
-    
-    This vehicle is in pristine condition, foreign used and recently imported. 
-    It features a fuel-efficient 1300cc petrol engine paired with a smooth automatic transmission.
-    
-    Key highlights:
-    - Original paint
-    - Accident free
-    - Low mileage
-    - Clean interior
-    - All documents available for transfer
-    
-    Perfect for city driving and daily commute. Financing options available.
-  `,
-    seller: {
-        name: "Kololo Showground",
-        type: "Dealer",
-        phone: "0777 000-000",
-        verified: true
-    }
-};
-
-// Mock Related Listings
-const relatedListings = [
-    {
-        image: "/imgs/car-red-1.jpg",
-        name: "Nissan Xtrail 2010",
-        price: "UGX 1,290,000",
-        year: "2010",
-        mileage: "120k km",
-        fuel: "Petrol",
-        seats: "5"
-    },
-    {
-        image: "/imgs/car-white-suv.jpg",
-        name: "Toyota Vitz 2016",
-        price: "UGX 1,280,000",
-        year: "2016",
-        mileage: "65k km",
-        fuel: "Petrol",
-        seats: "5"
-    },
-    {
-        image: "/imgs/car-silver.jpg",
-        name: "VW Golf Variant",
-        price: "UGX 880,000",
-        year: "2012",
-        mileage: "90k km",
-        fuel: "Diesel",
-        seats: "5"
-    },
-    {
-        image: "/imgs/loan-car.jpg",
-        name: "Isuzu NPR 2016",
-        price: "UGX 2,300,000",
-        year: "2016",
-        mileage: "150k km",
-        fuel: "Diesel",
-        seats: "3"
-    }
-];
+import { Listing } from '@/lib/types';
+import { ListingService } from '@/lib/services/listing.service';
+import { useParams } from 'next/navigation';
 
 export default function SingleListingPage() {
-    const [mainImage, setMainImage] = useState(carDetails.images[0]);
+    const params = useParams();
+    const id = params?.id as string;
+
+    const [listing, setListing] = useState<Listing | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [mainImage, setMainImage] = useState<string>('');
+    const [relatedListings, setRelatedListings] = useState<Listing[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!id) return;
+            setLoading(true);
+            try {
+                const response = await ListingService.getById(id);
+                if (response.success && response.data) {
+                    setListing(response.data);
+                    setMainImage(response.data.images[0] || '/imgs/car-placeholder.jpg');
+
+                    // Increment views
+                    ListingService.incrementViews(id);
+                }
+
+                // Fetch related (using latest for now)
+                const relatedResponse = await ListingService.getLatest();
+                if (relatedResponse.success && relatedResponse.data) {
+                    setRelatedListings(relatedResponse.data.filter(l => l.id !== id).slice(0, 4));
+                }
+
+            } catch (error) {
+                console.error("Failed to fetch listing details", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center bg-gray-50/50">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        );
+    }
+
+    if (!listing) {
+        return (
+            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50/50 gap-4">
+                <h2 className="text-2xl font-bold">Listing not found</h2>
+                <Button onClick={() => window.location.href = '/shop'}>Back to Shop</Button>
+            </div>
+        );
+    }
+
+    // Spec Helper
+    const specs = {
+        make: listing.brand,
+        model: listing.model,
+        year: listing.yearOfMake,
+        mileage: `${listing.mileage} km`,
+        transmission: listing.transmission,
+        fuel: listing.fuelType,
+        engineSize: listing.engineCapacity + "cc",
+        driveType: listing.drive,
+        color: listing.color,
+        bodyType: listing.category,
+        interior: "N/A", // Not in listing schema
+        doorCount: "N/A" // Not in listing schema
+    };
 
     return (
         <div className="min-h-screen bg-gray-50/50 pt-24 pb-12">
@@ -155,11 +131,11 @@ export default function SingleListingPage() {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="#">{carDetails.specs.make}</BreadcrumbLink>
+                                <BreadcrumbLink href={`/shop?brand=${listing.brand}`}>{listing.brand.toUpperCase()}</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbPage>{carDetails.title}</BreadcrumbPage>
+                                <BreadcrumbPage>{listing.title}</BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
@@ -174,37 +150,39 @@ export default function SingleListingPage() {
                         <div className="space-y-4">
                             <div className="relative aspect-video w-full overflow-hidden rounded-lg border bg-muted">
                                 <Image
-                                    src={mainImage}
-                                    alt={carDetails.title}
+                                    src={mainImage || '/imgs/car-placeholder.jpg'}
+                                    alt={listing.title}
                                     fill
                                     className="object-cover"
                                     priority
                                 />
                                 <div className="absolute top-4 left-4">
                                     <Badge className="bg-primary text-white font-bold hover:bg-primary/90">
-                                        {carDetails.condition}
+                                        {listing.condition === 'foreign_used' ? 'Foreign Used' : listing.condition === 'locally_used' ? 'Local Used' : 'New'}
                                     </Badge>
                                 </div>
                             </div>
 
-                            <Carousel className="w-full max-w-full">
-                                <CarouselContent className="-ml-2 md:-ml-4">
-                                    {carDetails.images.map((img, index) => (
-                                        <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/3 md:basis-1/4 lg:basis-1/5 cursor-pointer" onClick={() => setMainImage(img)}>
-                                            <div className={`relative aspect-4/3 overflow-hidden rounded-md border-2 ${mainImage === img ? 'border-primary' : 'border-transparent'}`}>
-                                                <Image
-                                                    src={img}
-                                                    alt={`View ${index + 1}`}
-                                                    fill
-                                                    className="object-cover hover:opacity-80 transition-opacity"
-                                                />
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                                <CarouselPrevious className="left-2" />
-                                <CarouselNext className="right-2" />
-                            </Carousel>
+                            {listing.images.length > 1 && (
+                                <Carousel className="w-full max-w-full">
+                                    <CarouselContent className="-ml-2 md:-ml-4">
+                                        {listing.images.map((img, index) => (
+                                            <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/3 md:basis-1/4 lg:basis-1/5 cursor-pointer" onClick={() => setMainImage(img)}>
+                                                <div className={`relative aspect-4/3 overflow-hidden rounded-md border-2 ${mainImage === img ? 'border-primary' : 'border-transparent'}`}>
+                                                    <Image
+                                                        src={img}
+                                                        alt={`View ${index + 1}`}
+                                                        fill
+                                                        className="object-cover hover:opacity-80 transition-opacity"
+                                                    />
+                                                </div>
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    <CarouselPrevious className="left-2" />
+                                    <CarouselNext className="right-2" />
+                                </Carousel>
+                            )}
                         </div>
 
                         {/* Overview & Key Specs */}
@@ -212,16 +190,16 @@ export default function SingleListingPage() {
                             <CardHeader>
                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                     <div>
-                                        <CardTitle className="text-2xl md:text-3xl font-bold text-foreground">{carDetails.title}</CardTitle>
+                                        <CardTitle className="text-2xl md:text-3xl font-bold text-foreground">{listing.title}</CardTitle>
                                         <div className="flex items-center gap-2 text-muted-foreground mt-2 text-sm">
                                             <MapPin className="h-4 w-4" />
-                                            <span>{carDetails.location}</span>
+                                            <span>{listing.location}</span>
                                             <span className="text-gray-300">|</span>
-                                            <span>Posted {carDetails.posted}</span>
+                                            <span>Posted {new Date(listing.createdAt).toLocaleDateString()}</span>
                                         </div>
                                     </div>
                                     <div className="text-left md:text-right">
-                                        <div className="text-3xl font-bold text-primary">{carDetails.price}</div>
+                                        <div className="text-3xl font-bold text-primary">{listing.price} {listing.currency || 'UGX'}</div>
                                     </div>
                                 </div>
                             </CardHeader>
@@ -231,22 +209,22 @@ export default function SingleListingPage() {
                                     <div className="flex flex-col items-center justify-center p-4 bg-secondary/50 rounded-lg">
                                         <Calendar className="h-6 w-6 text-primary mb-2" />
                                         <span className="text-xs text-muted-foreground uppercase">Year</span>
-                                        <span className="font-semibold">{carDetails.specs.year}</span>
+                                        <span className="font-semibold">{listing.yearOfMake}</span>
                                     </div>
                                     <div className="flex flex-col items-center justify-center p-4 bg-secondary/50 rounded-lg">
                                         <Gauge className="h-6 w-6 text-primary mb-2" />
                                         <span className="text-xs text-muted-foreground uppercase">Mileage</span>
-                                        <span className="font-semibold">{carDetails.specs.mileage}</span>
+                                        <span className="font-semibold">{listing.mileage}</span>
                                     </div>
                                     <div className="flex flex-col items-center justify-center p-4 bg-secondary/50 rounded-lg">
                                         <Settings className="h-6 w-6 text-primary mb-2" />
                                         <span className="text-xs text-muted-foreground uppercase">Transmission</span>
-                                        <span className="font-semibold">{carDetails.specs.transmission}</span>
+                                        <span className="font-semibold">{listing.transmission}</span>
                                     </div>
                                     <div className="flex flex-col items-center justify-center p-4 bg-secondary/50 rounded-lg">
                                         <Fuel className="h-6 w-6 text-primary mb-2" />
                                         <span className="text-xs text-muted-foreground uppercase">Fuel</span>
-                                        <span className="font-semibold">{carDetails.specs.fuel}</span>
+                                        <span className="font-semibold">{listing.fuelType}</span>
                                     </div>
                                 </div>
                             </CardContent>
@@ -278,13 +256,13 @@ export default function SingleListingPage() {
                             <div className="mt-6 bg-white rounded-lg border border-border p-6">
                                 <TabsContent value="overview" className="mt-0">
                                     <div className="prose max-w-none text-muted-foreground whitespace-pre-line">
-                                        {carDetails.description}
+                                        {listing.description}
                                     </div>
                                 </TabsContent>
 
                                 <TabsContent value="specs" className="mt-0">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                                        {Object.entries(carDetails.specs).map(([key, value]) => (
+                                        {Object.entries(specs).map(([key, value]) => (
                                             <div key={key} className="flex justify-between py-3 border-b border-border/50 last:border-0">
                                                 <span className="text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
                                                 <span className="font-medium text-foreground">{value}</span>
@@ -295,12 +273,13 @@ export default function SingleListingPage() {
 
                                 <TabsContent value="features" className="mt-0">
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                        {carDetails.features.map((feature, index) => (
+                                        {listing.features.map((feature, index) => (
                                             <div key={index} className="flex items-center gap-2">
                                                 <div className="h-2 w-2 rounded-full bg-primary" />
                                                 <span className="text-sm text-foreground">{feature}</span>
                                             </div>
                                         ))}
+                                        {listing.features.length === 0 && <p className="text-muted-foreground">No specific features listed.</p>}
                                     </div>
                                 </TabsContent>
                             </div>
@@ -322,13 +301,12 @@ export default function SingleListingPage() {
                                         <Car className="h-8 w-8 text-muted-foreground" />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-lg">{carDetails.seller.name}</h3>
+                                        <h3 className="font-bold text-lg">Seller</h3>
+                                        {/* Seller name not in Listing object yet, wait, listing.userId is needed to fetch user details? */}
+                                        {/* For now use generic text or if Listing has contact info */}
                                         <div className="flex items-center gap-2">
-                                            <Badge variant="outline" className="text-xs font-normal">{carDetails.seller.type}</Badge>
-                                            {carDetails.seller.verified && (
-                                                <span className="text-xs text-green-600 flex items-center gap-1 font-medium">
-                                                    <Shield className="h-3 w-3" /> Verified
-                                                </span>
+                                            {listing.sellerPhone && (
+                                                <Badge variant="outline" className="text-xs font-normal">Contact Available</Badge>
                                             )}
                                         </div>
                                     </div>
@@ -337,9 +315,18 @@ export default function SingleListingPage() {
                                 <Separator />
 
                                 <div className="grid gap-3">
-                                    <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold">
-                                        <Phone className="h-5 w-5" /> Call Seller
-                                    </Button>
+                                    {listing.sellerPhone ? (
+                                        <a href={`tel:${listing.sellerPhone}`}>
+                                            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold">
+                                                <Phone className="h-5 w-5" /> Call Seller
+                                            </Button>
+                                        </a>
+                                    ) : (
+                                        <Button size="lg" disabled className="w-full bg-muted text-muted-foreground gap-2 text-lg font-bold">
+                                            <Phone className="h-5 w-5" /> No Phone Number
+                                        </Button>
+                                    )}
+
                                     <Button size="lg" variant="outline" className="w-full border-primary text-primary hover:bg-primary/10 gap-2 font-bold">
                                         <MessageCircle className="h-5 w-5" /> Chat on WhatsApp
                                     </Button>
@@ -378,11 +365,21 @@ export default function SingleListingPage() {
                 <div className="mt-16">
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="text-2xl font-bold">Similar Vehicles</h2>
-                        <Button variant="link" className="text-primary">View All</Button>
+                        <Button variant="link" className="text-primary" onClick={() => window.location.href = '/shop'}>View All</Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {relatedListings.map((vehicle, index) => (
-                            <VehicleCard key={index} {...vehicle} />
+                        {relatedListings.map((vehicle) => (
+                            <VehicleCard
+                                key={vehicle.id}
+                                id={vehicle.id}
+                                image={vehicle.images[0] || "/imgs/car-placeholder.jpg"}
+                                name={`${vehicle.brand} ${vehicle.model}`}
+                                price={vehicle.price}
+                                year={vehicle.yearOfMake?.toString()}
+                                mileage={vehicle.mileage?.toString()}
+                                fuel={vehicle.fuelType}
+                                seats={vehicle.features.find(f => f.includes('Seats')) || undefined}
+                            />
                         ))}
                     </div>
                 </div>
