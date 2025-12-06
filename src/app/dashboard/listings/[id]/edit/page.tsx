@@ -44,7 +44,7 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
         }),
         onSuccess: () => {
             toast.success("Listing updated successfully!");
-            router.push('/dashboard/listings');
+            router.push('/dashboard');
         },
         onError: (error: any) => {
             console.error('Update error:', error);
