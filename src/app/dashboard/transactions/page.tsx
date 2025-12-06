@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Button } from '@/app/components/ui/button';
 import {
     Card,
@@ -17,7 +18,7 @@ import {
     TableRow,
 } from '@/app/components/ui/table';
 import { Badge } from '@/app/components/ui/badge';
-import { Edit, MoreHorizontal, PlusCircle, Trash } from 'lucide-react';
+import { MoreHorizontal, Loader2 } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -26,10 +27,41 @@ import {
     DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu';
 import Link from 'next/link';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { api } from '@/lib/api';
+import { Payment, ApiResponse } from '@/lib/types';
 
 export default function TransactionsPage() {
+    const [payments, setPayments] = useState<Payment[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPayments = async () => {
+            try {
+                const response = await api.get<ApiResponse<Payment[]>>('/payments/my-payments');
+                if (response.data.success && response.data.data) {
+                    setPayments(response.data.data);
+                }
+            } catch (error) {
+                console.error('Error fetching payments:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchPayments();
+    }, []);
+
+    const formatPrice = (price: string) => {
+        return new Intl.NumberFormat('en-UG', {
+            style: 'currency',
+            currency: 'UGX',
+            maximumFractionDigits: 0,
+        }).format(Number(price));
+    };
+
     return (
-        <>
+        <ProtectedRoute>
             <Card>
                 <CardHeader>
                     <CardTitle>My Previous Transactions</CardTitle>
@@ -38,102 +70,59 @@ export default function TransactionsPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="hidden w-[100px] sm:table-cell">
-                                    Image
-                                </TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead className="hidden md:table-cell">Price</TableHead>
-                                <TableHead className="hidden md:table-cell">Views</TableHead>
-                                <TableHead className="hidden md:table-cell">Created at</TableHead>
-                                <TableHead>
-                                    <span className="sr-only">Actions</span>
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {/* Mock Data */}
-                            <TableRow>
-                                <TableCell className="hidden sm:table-cell">
-                                    <div className="h-16 w-16 rounded-md bg-muted" />
-                                </TableCell>
-                                <TableCell className="font-medium">
-                                    Toyota Corolla 2018
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant="secondary">Active</Badge>
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    UGX 35,000,000
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">234</TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    2023-07-12
-                                </TableCell>
-                                <TableCell>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button aria-haspopup="true" size="icon" variant="ghost">
-                                                <MoreHorizontal className="h-4 w-4" />
-                                                <span className="sr-only">Toggle menu</span>
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                            <DropdownMenuItem>
-                                                <Edit className="mr-2 h-4 w-4" /> Edit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="text-destructive">
-                                                <Trash className="mr-2 h-4 w-4" /> Delete
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell className="hidden sm:table-cell">
-                                    <div className="h-16 w-16 rounded-md bg-muted" />
-                                </TableCell>
-                                <TableCell className="font-medium">
-                                    Subaru Forester 2015
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant="outline">Pending</Badge>
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    UGX 45,000,000
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">12</TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    2023-10-18
-                                </TableCell>
-                                <TableCell>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button aria-haspopup="true" size="icon" variant="ghost">
-                                                <MoreHorizontal className="h-4 w-4" />
-                                                <span className="sr-only">Toggle menu</span>
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                            <DropdownMenuItem>
-                                                <Edit className="mr-2 h-4 w-4" /> Edit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="text-destructive">
-                                                <Trash className="mr-2 h-4 w-4" /> Delete
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
+                    {isLoading ? (
+                        <div className="flex justify-center p-8">
+                            <Loader2 className="h-8 w-8 animate-spin" />
+                        </div>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Reference</TableHead>
+                                    <TableHead>Method</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="hidden md:table-cell">Amount</TableHead>
+                                    <TableHead className="hidden md:table-cell">Date</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {payments.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-8">
+                                            No transactions found.
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    payments.map((payment) => (
+                                        <TableRow key={payment.id}>
+                                            <TableCell className="font-medium">
+                                                {payment.paymentReference}
+                                            </TableCell>
+                                            <TableCell className="capitalize">
+                                                {payment.paymentMethod.replace('_', ' ')}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant={
+                                                    payment.status === 'completed' ? 'default' :
+                                                        payment.status === 'failed' ? 'destructive' : 'outline'
+                                                }>
+                                                    {payment.status}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="hidden md:table-cell">
+                                                {formatPrice(payment.amount)}
+                                            </TableCell>
+                                            <TableCell className="hidden md:table-cell">
+                                                {new Date(payment.createdAt).toLocaleDateString()}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
+                            </TableBody>
+                        </Table>
+                    )}
                 </CardContent>
             </Card>
-        </>
+        </ProtectedRoute>
     );
 }
