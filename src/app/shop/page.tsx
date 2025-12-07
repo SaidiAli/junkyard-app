@@ -40,11 +40,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/lib/hooks';
 
 const categories = [
-    "Cars", "Buses & Minibus", "Trucks & Trailers", "Vehicle Parts & Accessories", "Heavy Equipment", "Motorcycles & Scooters"
+    "Buses", "Hatchback", "Mini Truck", "Off Road", "Pickup",
+    "Saloon", "Sedan", "SUV", "Truck", "Van", "Wagon"
 ];
 
 const locations = [
-    "Kampala", "Mombasa", "Nakuru", "Eldoret", "Kisumu", "Thika", "Malindi", "Kitale"
+    "Kampala", "Jinja", "Arua", "Gulu", "Lira", "Masaka",
+    "Mbale", "Mbarara", "Mpigi", "Mukono", "Soroti"
 ];
 
 export default function ShopPage() {
@@ -129,7 +131,7 @@ export default function ShopPage() {
                         <SelectContent>
                             <SelectItem value="all">All Categories</SelectItem>
                             {categories.map(c => (
-                                <SelectItem key={c} value={c.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}>{c}</SelectItem>
+                                <SelectItem key={c} value={c.toLowerCase().replace(/ /g, '-')}>{c}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
@@ -174,10 +176,10 @@ export default function ShopPage() {
                                     <li key={cat}>
                                         <button
                                             onClick={() => {
-                                                setCategory(cat.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-'));
+                                                setCategory(cat.toLowerCase().replace(/ /g, '-'));
                                                 setPage(1);
                                             }}
-                                            className={`hover:text-primary transition-colors text-left w-full ${category === cat.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-') ? 'text-primary font-bold' : ''}`}
+                                            className={`hover:text-primary transition-colors text-left w-full ${category === cat.toLowerCase().replace(/ /g, '-') ? 'text-primary font-bold' : ''}`}
                                         >
                                             {cat}
                                         </button>
