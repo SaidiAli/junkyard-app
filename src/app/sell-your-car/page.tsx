@@ -76,8 +76,6 @@ export default function SellYourCarPage() {
     numberPlate: '',
     price: '',
     location: '',
-    sellerPhone: '0777 123 456', // Default/Mock value
-    sellerEmail: 'user@example.com', // Default/Mock value
     features: [] as string[],
     images: null as FileList | null
   });
@@ -483,38 +481,6 @@ export default function SellYourCarPage() {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="sellerPhone">Seller Phone Number</Label>
-                <div className="relative">
-                  <Input
-                    id="sellerPhone"
-                    name="sellerPhone"
-                    value={formData.sellerPhone}
-                    onChange={handleInputChange}
-                    className="pl-10"
-                    readOnly // Assuming default fill implies read-only or just pre-filled
-                  />
-                  <Info className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                </div>
-                <p className="text-[0.8rem] text-muted-foreground">Phone number linked to your account.</p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="sellerEmail">Seller Email</Label>
-                <div className="relative">
-                  <Input
-                    id="sellerEmail"
-                    name="sellerEmail"
-                    value={formData.sellerEmail}
-                    onChange={handleInputChange}
-                    className="pl-10"
-                    readOnly
-                  />
-                  <Info className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                </div>
-                <p className="text-[0.8rem] text-muted-foreground">Email linked to your account.</p>
               </div>
             </CardContent>
           </Card>
