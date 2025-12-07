@@ -37,6 +37,7 @@ import { useEffect, useState } from 'react';
 import { Listing, ListingFilter } from '@/lib/types';
 import { ListingService } from '@/lib/services/listing.service';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { brands as brandsData } from '@/lib/data';
 
 const categories = [
     "Buses", "Hatchback", "Mini Truck", "Off Road", "Pickup",
@@ -67,6 +68,7 @@ export default function ShopPage() {
 
     // Filters state
     const [category, setCategory] = useState(searchParams.get('category') || 'all');
+    const [brand, setBrand] = useState(searchParams.get('brand') || 'all');
     const [location, setLocation] = useState(searchParams.get('location') || '');
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
     const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
@@ -85,12 +87,13 @@ export default function ShopPage() {
     useEffect(() => {
         const params = new URLSearchParams();
         if (category && category !== 'all') params.set('category', category);
+        if (brand && brand !== 'all') params.set('brand', brand);
         if (location) params.set('location', location);
         if (debouncedSearch) params.set('search', debouncedSearch);
         if (page > 1) params.set('page', page.toString());
 
         router.push(`/shop?${params.toString()}`, { scroll: false });
-    }, [category, location, debouncedSearch, page, router]);
+    }, [category, brand, location, debouncedSearch, page, router]);
 
     // Fetch listings
     useEffect(() => {
@@ -103,6 +106,7 @@ export default function ShopPage() {
                 };
 
                 if (category && category !== 'all') filters.category = category as any;
+                if (brand && brand !== 'all') filters.brand = brand as any;
                 if (location) filters.location = location;
                 if (debouncedSearch) filters.search = debouncedSearch;
 
@@ -123,7 +127,7 @@ export default function ShopPage() {
         };
 
         fetchListings();
-    }, [category, location, debouncedSearch, page]);
+    }, [category, brand, location, debouncedSearch, page]);
 
 
     return (
@@ -177,19 +181,19 @@ export default function ShopPage() {
                     {/* Sidebar Filters */}
                     <aside className="w-full lg:w-64 shrink-0 space-y-8 hidden lg:block">
                         <div className="bg-white p-6 rounded-lg border border-border">
-                            <h3 className="font-bold text-lg mb-4">ALL CATEGORIES</h3>
+                            <h3 className="font-bold text-lg mb-4">CAR MODELS</h3>
                             <Separator className="mb-4" />
                             <ul className="space-y-3 text-sm text-muted-foreground">
-                                {categories.map((cat) => (
-                                    <li key={cat}>
+                                {brandsData.map((b) => (
+                                    <li key={b.value}>
                                         <button
                                             onClick={() => {
-                                                setCategory(cat.toLowerCase().replace(/ /g, '-'));
+                                                setBrand(b.value === brand ? 'all' : b.value);
                                                 setPage(1);
                                             }}
-                                            className={`hover:text-primary transition-colors text-left w-full ${category === cat.toLowerCase().replace(/ /g, '-') ? 'text-primary font-bold' : ''}`}
+                                            className={`hover:text-primary transition-colors text-left w-full ${brand === b.value ? 'text-primary font-bold' : ''}`}
                                         >
-                                            {cat}
+                                            {b.label}
                                         </button>
                                     </li>
                                 ))}
@@ -262,6 +266,7 @@ export default function ShopPage() {
                                     variant="link"
                                     onClick={() => {
                                         setCategory('all');
+                                        setBrand('all');
                                         setLocation('');
                                         setSearchTerm('');
                                         setPage(1);
