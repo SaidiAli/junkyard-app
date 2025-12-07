@@ -1,11 +1,11 @@
 const PopularBrands = () => {
   const brands = [
-    { name: "Honda", logo: "H" },
-    { name: "Nissan", logo: "N" },
-    { name: "Toyota", logo: "T" },
-    { name: "Audi", logo: "A" },
-    { name: "Tesla", logo: "T" },
-    { name: "BMW", logo: "B" },
+    { name: "Honda", logo: "/honda.svg" },
+    { name: "Nissan", logo: "/nissan.svg" },
+    { name: "Toyota", logo: "/toyota.svg" },
+    { name: "Audi", logo: "/audi.svg" },
+    { name: "Ford", logo: "/ford.svg" },
+    { name: "BMW", logo: "/bmw.svg" },
   ];
 
   return (
@@ -20,8 +20,12 @@ const PopularBrands = () => {
               key={index}
               className="bg-background rounded-lg p-8 flex flex-col items-center justify-center gap-4 hover:shadow-hover transition-all duration-300 cursor-pointer group"
             >
-              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-3xl font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                {brand.logo}
+              <div className="w-16 h-16 flex items-center justify-center transition-all duration-300 transform group-hover:scale-110">
+                <img
+                  src={brand.logo}
+                  alt={`${brand.name} logo`}
+                  className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                />
               </div>
               <p className="font-semibold text-center">{brand.name}</p>
             </div>
