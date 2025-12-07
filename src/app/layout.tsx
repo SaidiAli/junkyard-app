@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Buy and sell cars in Uganda",
 };
 
+import { Toaster } from "@/app/components/ui/sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,6 +36,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <Toaster />
         </Providers>
       </body>
     </html>

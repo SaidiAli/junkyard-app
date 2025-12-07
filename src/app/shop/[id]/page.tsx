@@ -42,6 +42,7 @@ import VehicleCard from "@/app/components/VehicleCard";
 import { Listing } from '@/lib/types';
 import { ListingService } from '@/lib/services/listing.service';
 import { useParams } from 'next/navigation';
+import { Icon } from '@iconify/react';
 
 export default function SingleListingPage() {
     const params = useParams();
@@ -318,23 +319,35 @@ export default function SingleListingPage() {
                                 <div className="grid gap-3">
                                     {listing.sellerPhone ? (
                                         <a href={`tel:${listing.sellerPhone}`}>
-                                            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold">
+                                            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer">
                                                 <Phone className="h-5 w-5" /> Call Seller
                                             </Button>
                                         </a>
                                     ) : (
-                                        <Button size="lg" disabled className="w-full bg-muted text-muted-foreground gap-2 text-lg font-bold">
+                                        <Button size="lg" disabled className="w-full bg-muted text-muted-foreground gap-2 text-lg font-bold hover:cursor-not-allowed">
                                             <Phone className="h-5 w-5" /> No Phone Number
                                         </Button>
                                     )}
 
-                                    <Button size="lg" variant="outline" className="w-full border-primary text-primary hover:bg-primary/10 gap-2 font-bold">
-                                        <MessageCircle className="h-5 w-5" /> Chat on WhatsApp
-                                    </Button>
+                                    {listing.sellerPhone ? (
+                                        <a
+                                            href={`https://wa.me/${listing.sellerPhone.replace(/\D/g, '').replace(/^0/, '256')}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <Button size="lg" variant="outline" className="w-full text-white bg-[#25D366] hover:bg-[#25D366]/80 gap-2 font-bold hover:cursor-pointer">
+                                                <Icon icon={"ic:baseline-whatsapp"} className="h-8 w-8" /> Chat on WhatsApp
+                                            </Button>
+                                        </a>
+                                    ) : (
+                                        <Button size="lg" variant="outline" disabled className="w-full border-primary text-primary gap-2 font-bold opacity-50 hover:cursor-not-allowed">
+                                            <Icon icon={"ic:baseline-whatsapp"} className="h-8 w-8" /> Chat on WhatsApp
+                                        </Button>
+                                    )}
                                 </div>
 
                                 <div className="flex gap-2">
-                                    <Button variant="ghost" size="sm" className="flex-1 border border-border" onClick={() => {
+                                    <Button variant="ghost" size="sm" className="flex-1 border border-border hover:cursor-pointer" onClick={() => {
                                         navigator.clipboard.writeText(window.location.href);
                                         toast.success("Link copied to clipboard", {
                                             description: "You can now share this listing with others."

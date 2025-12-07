@@ -8,7 +8,6 @@ import {
     LayoutGrid,
     List as ListIcon,
     Search,
-    ChevronRight,
     Loader2
 } from 'lucide-react';
 
@@ -35,7 +34,7 @@ import {
 import { Separator } from "@/app/components/ui/separator";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Listing, ListingFilter, PaginatedResponse } from '@/lib/types';
+import { Listing, ListingFilter } from '@/lib/types';
 import { ListingService } from '@/lib/services/listing.service';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/lib/hooks';
@@ -302,7 +301,7 @@ export default function ShopPage() {
                                                         </Badge>
                                                         <div className="flex items-center text-xs text-muted-foreground">
                                                             <span className="bg-primary/10 text-primary px-1 rounded mr-1">
-                                                                {listing.bodyType || 'Car'}
+                                                                {'Car'}
                                                             </span>
                                                         </div>
                                                         <div className="flex items-center text-xs text-muted-foreground">
