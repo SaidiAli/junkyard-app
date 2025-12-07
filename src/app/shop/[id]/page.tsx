@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import Image from 'next/image';
 import {
     MapPin,
@@ -199,7 +200,7 @@ export default function SingleListingPage() {
                                         </div>
                                     </div>
                                     <div className="text-left md:text-right">
-                                        <div className="text-3xl font-bold text-primary">{listing.price} {listing.currency || 'UGX'}</div>
+                                        <div className="text-3xl font-bold text-primary">UGX</div>
                                     </div>
                                 </div>
                             </CardHeader>
@@ -333,11 +334,13 @@ export default function SingleListingPage() {
                                 </div>
 
                                 <div className="flex gap-2">
-                                    <Button variant="ghost" size="sm" className="flex-1 border border-border">
+                                    <Button variant="ghost" size="sm" className="flex-1 border border-border" onClick={() => {
+                                        navigator.clipboard.writeText(window.location.href);
+                                        toast.success("Link copied to clipboard", {
+                                            description: "You can now share this listing with others."
+                                        });
+                                    }}>
                                         <Share2 className="h-4 w-4 mr-2" /> Share
-                                    </Button>
-                                    <Button variant="ghost" size="sm" className="flex-1 border border-border">
-                                        <Heart className="h-4 w-4 mr-2" /> Save
                                     </Button>
                                 </div>
                             </CardContent>
