@@ -16,19 +16,20 @@ const PopularBrands = () => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {brands.map((brand, index) => (
-            <div
-              key={index}
-              className="bg-background rounded-lg p-8 flex flex-col items-center justify-center gap-4 hover:shadow-hover transition-all duration-300 cursor-pointer group"
-            >
-              <div className="w-16 h-16 flex items-center justify-center transition-all duration-300 transform group-hover:scale-110">
-                <img
-                  src={brand.logo}
-                  alt={`${brand.name} logo`}
-                  className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
-                />
+            <a href={`/shop?brand=${brand.name.toLowerCase()}`} key={index}>
+              <div
+                className="bg-background rounded-lg p-8 flex flex-col items-center justify-center gap-4 hover:shadow-hover transition-all duration-300 cursor-pointer group"
+              >
+                <div className="w-16 h-16 flex items-center justify-center transition-all duration-300 transform group-hover:scale-110">
+                  <img
+                    src={brand.logo}
+                    alt={`${brand.name} logo`}
+                    className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                  />
+                </div>
+                <p className="font-semibold text-center">{brand.name}</p>
               </div>
-              <p className="font-semibold text-center">{brand.name}</p>
-            </div>
+            </a>
           ))}
         </div>
       </div>
