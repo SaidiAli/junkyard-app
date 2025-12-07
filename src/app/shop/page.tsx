@@ -37,7 +37,6 @@ import { useEffect, useState } from 'react';
 import { Listing, ListingFilter } from '@/lib/types';
 import { ListingService } from '@/lib/services/listing.service';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useDebounce } from '@/lib/hooks';
 
 const categories = [
     "Buses", "Hatchback", "Mini Truck", "Off Road", "Pickup",
@@ -45,8 +44,17 @@ const categories = [
 ];
 
 const locations = [
-    "Kampala", "Jinja", "Arua", "Gulu", "Lira", "Masaka",
-    "Mbale", "Mbarara", "Mpigi", "Mukono", "Soroti"
+    { label: "Kampala", value: "kampala" },
+    { label: "Jinja", value: "jinja" },
+    { label: "Arua", value: "arua" },
+    { label: "Gulu", value: "gulu" },
+    { label: "Lira", value: "lira" },
+    { label: "Masaka", value: "masaka" },
+    { label: "Mbale", value: "mbale" },
+    { label: "Mbarara", value: "mbarara" },
+    { label: "Mpigi", value: "mpigi" },
+    { label: "Mukono", value: "mukono" },
+    { label: "Soroti", value: "soroti" }
 ];
 
 export default function ShopPage() {
@@ -193,15 +201,15 @@ export default function ShopPage() {
                             <Separator className="mb-4" />
                             <ul className="space-y-3 text-sm text-muted-foreground">
                                 {locations.map((loc) => (
-                                    <li key={loc}>
+                                    <li key={loc.value}>
                                         <button
                                             onClick={() => {
-                                                setLocation(loc);
+                                                setLocation(loc.value);
                                                 setPage(1);
                                             }}
-                                            className={`hover:text-primary transition-colors text-left w-full ${location === loc ? 'text-primary font-bold' : ''}`}
+                                            className={`hover:text-primary transition-colors text-left w-full ${location === loc.value ? 'text-primary font-bold' : ''}`}
                                         >
-                                            {loc}
+                                            {loc.label}
                                         </button>
                                     </li>
                                 ))}
@@ -314,20 +322,10 @@ export default function ShopPage() {
 
                                                     <div className="flex items-end justify-between mt-auto">
                                                         <div className="text-right w-full">
-                                                            <p className="text-xl font-bold text-foreground">{listing.price}</p>
+                                                            <p className="text-xl font-bold text-foreground">UGX {listing.price}</p>
                                                         </div>
                                                     </div>
                                                 </CardContent>
-
-                                                <CardFooter className="p-4 pt-0 flex justify-end gap-2 mt-auto">
-                                                    <Button size="icon" className="bg-primary hover:bg-primary/90 rounded-sm h-8 w-8">
-                                                        <span className="sr-only">View</span>
-                                                        <div className="h-2 w-2 bg-white rounded-full" />
-                                                    </Button>
-                                                    <Button size="icon" variant="outline" className="rounded-sm h-8 w-8 border-border">
-                                                        <Heart className="h-4 w-4 text-muted-foreground" />
-                                                    </Button>
-                                                </CardFooter>
                                             </Card>
                                         </Link>
                                     ))}
