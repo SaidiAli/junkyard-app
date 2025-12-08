@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Label } from "@/app/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 import api from '@/lib/api';
-import { ApiResponse } from '@/lib/types';
 
 export default function PaymentPage() {
     const router = useRouter();
@@ -72,7 +71,6 @@ export default function PaymentPage() {
                     } else if (status === 'failed') {
                         setPolling(false);
                         clearInterval(intervalId);
-                        // Error handling is managed by display
                     }
                 } catch (error) {
                     console.error("Polling error", error);
@@ -137,7 +135,7 @@ export default function PaymentPage() {
                         {/* Order Summary */}
                         <div className="bg-muted p-4 rounded-lg space-y-2">
                             <div className="flex justify-between font-medium">
-                                <span>Listing</span>
+                                <span>Car name</span>
                                 <span className="truncate w-1/2 text-right">{listing.title}</span>
                             </div>
                             <div className="flex justify-between font-medium">
@@ -155,7 +153,7 @@ export default function PaymentPage() {
                                 <AlertCircle className="h-4 w-4" />
                                 <AlertTitle>Error</AlertTitle>
                                 <AlertDescription>
-                                    {initiatePaymentMutation.error?.message || "Failed to initiate payment. Please try again."}
+                                    {"Failed to initiate payment. Please try again."}
                                 </AlertDescription>
                             </Alert>
                         )}

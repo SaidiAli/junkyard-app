@@ -70,12 +70,12 @@ export default function SellYourCarPage() {
 
       if (selectedPackage?.name === 'free') {
         alert("Ad submitted successfully!");
-        router.push('/dashboard/listings');
+        router.push('/dashboard');
       } else {
         // Check if listing is already approved/active (e.g. valid Dealer subscription)
         if (listing.status === 'approved' || listing.status === 'active') { // status check depends on backend enum
           alert("Ad submitted successfully! (Covered by your Plan)");
-          router.push('/dashboard/listings');
+          router.push('/dashboard');
         } else {
           // Redirect to payment
           router.push(`/payment/${listing.id}`);
