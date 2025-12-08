@@ -38,29 +38,8 @@ export default function SellYourCarPage() {
     },
   });
 
-  const createListingMutation = useMutation({
-    mutationFn: (data: FormData) => api.post('/listings', data, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    }),
-    onSuccess: () => {
-      alert("Ad submitted successfully!");
-      router.push('/dashboard/listings');
-    },
-    onError: (error: any) => {
-      console.error('Submission error:', error);
-      const errorData = error.response?.data;
-      if (errorData && errorData.errors) {
-        const errorMessages = errorData.errors.map((err: { field: string, message: string }) => `${err.field}: ${err.message}`).join('\n');
-        alert(`Failed to submit ad:\n${errorMessages}`);
-      } else {
-        alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);
-      }
-    }
-  });
-
   const [formData, setFormData] = useState({
     category: '',
-    adType: 'Free', // Changed from 'For Sale' to a valid adType
     title: '',
     description: '',
     brand: '',
@@ -76,8 +55,43 @@ export default function SellYourCarPage() {
     numberPlate: '',
     price: '',
     location: '',
+    packageId: '',
     features: [] as string[],
     images: null as FileList | null
+  });
+
+  const createListingMutation = useMutation({
+    mutationFn: (data: FormData) => api.post('/listings', data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+    onSuccess: (response) => {
+      const listing = response.data.data;
+      const selectedPackage = packages?.find((p: any) => p.id === formData.packageId);
+
+      if (selectedPackage?.name === 'free') {
+        alert("Ad submitted successfully!");
+        router.push('/dashboard/listings');
+      } else {
+        // Check if listing is already approved/active (e.g. valid Dealer subscription)
+        if (listing.status === 'approved' || listing.status === 'active') { // status check depends on backend enum
+          alert("Ad submitted successfully! (Covered by your Plan)");
+          router.push('/dashboard/listings');
+        } else {
+          // Redirect to payment
+          router.push(`/payment/${listing.id}`);
+        }
+      }
+    },
+    onError: (error: any) => {
+      console.error('Submission error:', error);
+      const errorData = error.response?.data;
+      if (errorData && errorData.errors) {
+        const errorMessages = errorData.errors.map((err: { field: string, message: string }) => `${err.field}: ${err.message}`).join('\n');
+        alert(`Failed to submit ad:\n${errorMessages}`);
+      } else {
+        alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);
+      }
+    }
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -121,9 +135,14 @@ export default function SellYourCarPage() {
     if (!formData.images || formData.images.length === 0) {
       alert("Please upload at least one photo of the vehicle.");
       return;
+      // TODO: Validate image count based on package (client-side check strictly speaking needs package info)
     }
     if (!formData.brand) {
       alert("Please select a car brand.");
+      return;
+    }
+    if (!formData.packageId) {
+      alert("Please select a package.");
       return;
     }
 
@@ -131,7 +150,6 @@ export default function SellYourCarPage() {
 
     // Append fields
     data.append('category', formData.category.toLowerCase());
-    data.append('typeOfAd', formData.adType);
     data.append('title', formData.title);
     data.append('description', formData.description);
     data.append('brand', slugifyBrand(formData.brand));
@@ -147,6 +165,7 @@ export default function SellYourCarPage() {
     data.append('numberPlate', formData.numberPlate);
     data.append('price', formData.price);
     data.append('location', formData.location.toLowerCase());
+    data.append('packageId', formData.packageId);
 
     // Append features
     formData.features.forEach(feature => {
@@ -158,11 +177,6 @@ export default function SellYourCarPage() {
       Array.from(formData.images).forEach(image => {
         data.append('images', image);
       });
-    }
-
-    // Handle packageId
-    if (packages && packages.length > 0) {
-      data.append('packageId', packages[0].id);
     }
 
     createListingMutation.mutate(data);
@@ -177,6 +191,29 @@ export default function SellYourCarPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
+
+          {/* Package Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Select Package</CardTitle>
+              <CardDescription>Choose the best plan for your ad.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-3">
+                {packages?.map((pkg: any) => (
+                  <div
+                    key={pkg.id}
+                    className={`cursor-pointer border rounded-lg p-4 transition-all ${formData.packageId === pkg.id ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                    onClick={() => setFormData(prev => ({ ...prev, packageId: pkg.id }))}
+                  >
+                    <h3 className="font-semibold text-lg">{pkg.displayName}</h3>
+                    <p className="text-2xl font-bold mt-2">UGX {parseFloat(pkg.price).toLocaleString()}</p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Basic Information */}
           <Card>
             <CardHeader>
@@ -184,7 +221,7 @@ export default function SellYourCarPage() {
               <CardDescription>Essential details about your listing.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-6 md:grid-cols-2">
-              <div className="space-y-2">
+              <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="category">Category</Label>
                 <Select onValueChange={(value) => handleSelectChange('category', value)} required>
                   <SelectTrigger>
@@ -193,20 +230,6 @@ export default function SellYourCarPage() {
                   <SelectContent>
                     {categories.map(cat => (
                       <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="adType">Type of Ad</Label>
-                <Select value={formData.adType} onValueChange={(value) => handleSelectChange('adType', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Ad Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {adTypes.map(type => (
-                      <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
