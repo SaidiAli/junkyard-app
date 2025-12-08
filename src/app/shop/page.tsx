@@ -32,7 +32,7 @@ import {
 } from "@/app/components/ui/pagination";
 import { Separator } from "@/app/components/ui/separator";
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Listing, ListingFilter } from '@/lib/types';
 import { ListingService } from '@/lib/services/listing.service';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -57,7 +57,7 @@ const locations = [
     { label: "Soroti", value: "soroti" }
 ];
 
-export default function ShopPage() {
+function ShopContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -416,5 +416,17 @@ export default function ShopPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ShopPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex justify-center items-center min-h-screen">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        }>
+            <ShopContent />
+        </Suspense>
     );
 }
