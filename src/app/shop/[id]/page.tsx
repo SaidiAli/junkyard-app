@@ -12,9 +12,7 @@ import {
     Car,
     Shield,
     Share2,
-    Heart,
     Phone,
-    MessageCircle,
     Loader2
 } from 'lucide-react';
 
