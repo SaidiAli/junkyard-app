@@ -84,7 +84,7 @@ const Navbar = () => {
         <SheetContent side="left" className="w-3/4 sm:max-w-sm">
           <SheetHeader className="mb-8">
             <Image
-              src="/imgs/logo.svg"
+              src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764080623/junkyard/lrmnidwq25bck2xsvhlu.svg"
               alt="Kars"
               width={120}
               height={40}

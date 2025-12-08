@@ -33,7 +33,7 @@ const VehicleCard = ({ id, image, name, price, year, mileage, fuel, seats }: Veh
         <CardContent className="p-6 space-y-4 flex-1">
           <div>
             <h3 className="text-xl font-bold mb-2 line-clamp-1">{name}</h3>
-            <p className="text-2xl font-bold text-primary">{price}</p>
+            <p className="text-2xl font-bold text-primary">UGX {parseFloat(price).toLocaleString()}</p>
           </div>
           {(mileage || fuel || seats) && (
             <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">

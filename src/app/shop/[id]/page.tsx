@@ -201,7 +201,7 @@ export default function SingleListingPage() {
                                         </div>
                                     </div>
                                     <div className="text-left md:text-right">
-                                        <div className="text-3xl font-bold text-primary">UGX</div>
+                                        <div className="text-3xl font-bold text-primary">UGX {parseFloat(listing.price).toLocaleString()}</div>
                                     </div>
                                 </div>
                             </CardHeader>
