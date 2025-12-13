@@ -44,6 +44,11 @@ export const authService = {
         return response.data;
     },
 
+    verifyEmail: async (token: string): Promise<any> => {
+        const response = await api.post('/auth/verify-email', { token });
+        return response.data;
+    },
+
     logout: () => {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
