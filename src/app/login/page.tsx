@@ -28,7 +28,6 @@ export default function LoginPage() {
                             <p className="text-lg">
                                 &ldquo;The best place to find your dream car or sell your old one. Join thousands of satisfied customers today.&rdquo;
                             </p>
-                            <footer className="text-sm">Sofia Davis</footer>
                         </blockquote>
                     </div>
                 </div>

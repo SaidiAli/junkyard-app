@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Upload, Info } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Textarea } from "@/app/components/ui/textarea";
@@ -29,6 +30,13 @@ const slugifyBrand = (brand: string) => {
 
 export default function SellYourCarPage() {
   const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login?redirect=/sell-your-car');
+    }
+  }, [isLoading, isAuthenticated, router]);
 
   const { data: packages } = useQuery({
     queryKey: ['packages'],
@@ -181,6 +189,14 @@ export default function SellYourCarPage() {
 
     createListingMutation.mutate(data);
   };
+
+  if (isLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-secondary/30 flex items-center justify-center pt-32">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-secondary/30 py-12 px-4 sm:px-6 lg:px-8 pt-32">
