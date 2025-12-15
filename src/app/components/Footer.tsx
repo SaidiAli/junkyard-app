@@ -1,10 +1,10 @@
-import { Twitter, Instagram } from "lucide-react";
 import { Button } from "./ui/button";
 import Image from "next/image"
+import { Icon } from "@iconify/react";
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary/30 text-foreground border-t border-border/50">
+    <footer className="bg-secondary text-foreground border-t border-border/50">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
           {/* Brand */}
@@ -21,22 +21,26 @@ const Footer = () => {
 
           {/* Contact & Socials */}
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-            <a
-              href="tel:+11234567890"
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-            >
-              0777 000-000
-            </a>
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-xl font-bold text-muted-foreground">Contact</p>
+              <a
+                href="tel:+256785050941"
+                className="text-xl font-bold text-muted-foreground hover:text-primary transition-colors"
+              >
+                0785 050941
+              </a>
+            </div>
 
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" className="h-16 w-16 hover:bg-primary/10 hover:text-primary transition-colors">
-                <Twitter className="h-16 w-16" />
-                <span className="sr-only">Twitter</span>
-              </Button>
-              <Button variant="ghost" size="icon" className="h-16 w-16 hover:bg-primary/10 hover:text-primary transition-colors">
-                <Instagram className="h-16 w-16" />
-                <span className="sr-only">Instagram</span>
-              </Button>
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-xl font-bold text-muted-foreground">Our Socials</p>
+              <div className="flex items-center gap-2">
+                <a href="https://twitter.com/junkyard256" target="_blank" className="flex items-center justify-center h-16 w-16 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+                  <Icon icon="line-md:twitter-x" className="h-8 w-8" />
+                </a>
+                <a href="https://instagram.com/junkyard256" target="_blank" className="flex items-center justify-center h-16 w-16 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+                  <Icon icon="line-md:instagram" className="h-8 w-8" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

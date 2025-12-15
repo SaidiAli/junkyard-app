@@ -46,7 +46,7 @@ export default function SingleListingPage() {
     const params = useParams();
     const id = params?.id as string;
 
-    const [listing, setListing] = useState<Listing | null>(null);
+    const [listing, setListing] = useState<Listing & { contact: { phone: string, email: string, contactViaAdmin: boolean }, user: { firstName: string, lastName: string } } | null>(null);
     const [loading, setLoading] = useState(true);
     const [mainImage, setMainImage] = useState<string>('');
     const [relatedListings, setRelatedListings] = useState<Listing[]>([]);
@@ -297,26 +297,20 @@ export default function SingleListingPage() {
                             </CardHeader>
                             <CardContent className="pt-6 space-y-6">
                                 <div className="flex items-center gap-4">
-                                    <div className="h-14 w-14 rounded-full bg-secondary flex items-center justify-center border">
-                                        <Car className="h-8 w-8 text-muted-foreground" />
+                                    <div className='h-32 w-32 rounded-xl bg-muted/30 flex items-center justify-center'>
+                                        <Icon icon="el:user" className='w-16 h-16' />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-lg">Seller</h3>
-                                        {/* Seller name not in Listing object yet, wait, listing.userId is needed to fetch user details? */}
-                                        {/* For now use generic text or if Listing has contact info */}
-                                        <div className="flex items-center gap-2">
-                                            {listing.sellerPhone && (
-                                                <Badge variant="outline" className="text-xs font-normal">Contact Available</Badge>
-                                            )}
-                                        </div>
+                                        <p className="text-sm text-muted-foreground">Posted by</p>
+                                        <p className="font-bold text-lg">{listing.user?.firstName} {listing.user?.lastName}</p>
                                     </div>
                                 </div>
 
                                 <Separator />
 
                                 <div className="grid gap-3">
-                                    {listing.sellerPhone ? (
-                                        <a href={`tel:${listing.sellerPhone}`}>
+                                    {listing.contact ? (
+                                        <a href={`tel:${listing.contact.phone}`}>
                                             <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer">
                                                 <Phone className="h-5 w-5" /> Call Seller
                                             </Button>
@@ -327,9 +321,9 @@ export default function SingleListingPage() {
                                         </Button>
                                     )}
 
-                                    {listing.sellerPhone ? (
+                                    {listing.contact ? (
                                         <a
-                                            href={`https://wa.me/${listing.sellerPhone.replace(/\D/g, '').replace(/^0/, '256')}`}
+                                            href={`https://wa.me/${listing.contact.phone.replace(/\D/g, '').replace(/^0/, '256')}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >

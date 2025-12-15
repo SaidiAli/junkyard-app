@@ -30,7 +30,7 @@ export const ListingService = {
 
     // Get single listing by ID
     getById: async (id: string) => {
-        const response = await api.get<ApiResponse<Listing>>(`/listings/${id}`);
+        const response = await api.get<ApiResponse<Listing & { contact: { phone: string, email: string, contactViaAdmin: boolean }, user: { firstName: string, lastName: string } }>>(`/listings/${id}?contact=true`);
         return response.data;
     },
 
