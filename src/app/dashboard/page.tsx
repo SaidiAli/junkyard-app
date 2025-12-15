@@ -31,6 +31,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { api } from '@/lib/api';
 import { Listing, ApiResponse } from '@/lib/types';
 import { toast } from 'sonner';
+import { getImageUrl } from '@/lib/utils';
 
 export default function MyListingsPage() {
     const [listings, setListings] = useState<Listing[]>([]);
@@ -129,7 +130,7 @@ export default function MyListingsPage() {
                                                 <div className="h-16 w-16 rounded-md bg-muted overflow-hidden relative">
                                                     {listing.images && listing.images.length > 0 ? (
                                                         <img
-                                                            src={listing.images[0]}
+                                                            src={getImageUrl(listing.images[0])}
                                                             alt={listing.title}
                                                             className="object-cover w-full h-full"
                                                         />

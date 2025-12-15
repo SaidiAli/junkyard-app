@@ -37,6 +37,7 @@ import { Listing, ListingFilter } from '@/lib/types';
 import { ListingService } from '@/lib/services/listing.service';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { brands as brandsData } from '@/lib/data';
+import { getImageUrl } from '@/lib/utils';
 
 const categories = [
     "Buses", "Hatchback", "Mini Truck", "Off Road", "Pickup",
@@ -290,7 +291,7 @@ function ShopContent() {
                                                     )}
 
                                                     <Image
-                                                        src={listing.images[0] || "/imgs/car-placeholder.jpg"}
+                                                        src={getImageUrl(listing.images[0]) || "/imgs/car-placeholder.jpg"}
                                                         alt={listing.title}
                                                         fill
                                                         className="object-cover group-hover:scale-105 transition-transform duration-500"

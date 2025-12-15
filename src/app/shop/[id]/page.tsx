@@ -41,6 +41,7 @@ import { Listing } from '@/lib/types';
 import { ListingService } from '@/lib/services/listing.service';
 import { useParams } from 'next/navigation';
 import { Icon } from '@iconify/react';
+import { getImageUrl } from '@/lib/utils';
 
 export default function SingleListingPage() {
     const params = useParams();
@@ -150,7 +151,7 @@ export default function SingleListingPage() {
                         <div className="space-y-4">
                             <div className="relative aspect-video w-full overflow-hidden rounded-lg border bg-muted">
                                 <Image
-                                    src={mainImage || '/imgs/car-placeholder.jpg'}
+                                    src={getImageUrl(mainImage) || '/imgs/car-placeholder.jpg'}
                                     alt={listing.title}
                                     fill
                                     className="object-cover"
@@ -170,7 +171,7 @@ export default function SingleListingPage() {
                                             <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/3 md:basis-1/4 lg:basis-1/5 cursor-pointer" onClick={() => setMainImage(img)}>
                                                 <div className={`relative aspect-4/3 overflow-hidden rounded-md border-2 ${mainImage === img ? 'border-primary' : 'border-transparent'}`}>
                                                     <Image
-                                                        src={img}
+                                                        src={getImageUrl(img)}
                                                         alt={`View ${index + 1}`}
                                                         fill
                                                         className="object-cover hover:opacity-80 transition-opacity"

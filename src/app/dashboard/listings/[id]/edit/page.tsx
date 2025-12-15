@@ -16,6 +16,7 @@ import { ApiResponse, Listing } from '@/lib/types';
 import api from '@/lib/api';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { toast } from 'sonner';
+import { getImageUrl } from '@/lib/utils';
 
 // Generate years 1990-2025
 const years = Array.from({ length: 2025 - 1990 + 1 }, (_, i) => (2025 - i).toString());
@@ -463,7 +464,7 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
                                         <div className="mb-4 grid grid-cols-3 gap-4">
                                             {formData.currentImages.map((img, idx) => (
                                                 <div key={idx} className="relative aspect-video bg-muted rounded-md overflow-hidden">
-                                                    <img src={img} alt="Current" className="object-cover w-full h-full" />
+                                                    <img src={getImageUrl(img)} alt="Current" className="object-cover w-full h-full" />
                                                 </div>
                                             ))}
                                         </div>

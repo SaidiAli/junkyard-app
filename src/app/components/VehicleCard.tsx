@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Gauge, Fuel, Users } from "lucide-react";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
+import { getImageUrl } from "../../lib/utils";
 
 interface VehicleCardProps {
   id: string;
@@ -20,7 +21,7 @@ const VehicleCard = ({ id, image, name, price, year, mileage, fuel, seats }: Veh
       <Card className="group overflow-hidden hover:shadow-hover transition-all duration-300 border-border h-full flex flex-col">
         <div className="relative overflow-hidden aspect-[4/3]">
           <img
-            src={image}
+            src={getImageUrl(image)}
             alt={name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
