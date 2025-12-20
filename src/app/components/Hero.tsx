@@ -1,4 +1,4 @@
-import Image from 'next/image';
+
 import SearchForm from './SearchForm';
 
 const Hero = () => {
@@ -9,12 +9,10 @@ const Hero = () => {
     >
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <Image
+        <img
           src="https://res.cloudinary.com/zurri-cloud/image/upload/v1761209098/junkyard/n7lra4eaom7y4m6mqqwf.jpg"
           alt="Hero background"
-          fill
-          className="object-cover"
-          priority
+          className="object-cover w-full h-full absolute inset-0"
         />
         <div className="absolute inset-0 bg-black/20" />
       </div>

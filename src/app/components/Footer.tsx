@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import Image from "next/image"
+
 import { Icon } from "@iconify/react";
 
 const Footer = () => {
@@ -9,13 +9,12 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
           {/* Brand */}
           <div className="flex-shrink-0">
-            <Image
+            <img
               src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764080623/junkyard/lrmnidwq25bck2xsvhlu.svg"
               alt="Junkyard Concepts"
               width={140}
               height={40}
               className="w-32 md:w-40 h-auto"
-              priority
             />
           </div>
 

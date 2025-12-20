@@ -54,7 +54,7 @@ const PremiumAds = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Premium ADS</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Premium Ads</h2>
           </div>
           <Link href="/shop">
             <Button variant="hero" className="hidden md:flex cursor">

@@ -1,6 +1,6 @@
 import RegisterForm from '@/app/components/auth/RegisterForm';
 import { Metadata } from 'next';
-import Image from 'next/image';
+
 
 export const metadata: Metadata = {
     title: 'Register - Junkyard Concepts',
@@ -13,12 +13,10 @@ export default function RegisterPage() {
             <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
                 <div className="absolute inset-0 bg-zinc-900" />
                 <div className="absolute inset-0">
-                    <Image
+                    <img
                         src="/imgs/login-bg.jpg"
                         alt="Login background"
-                        fill
-                        className="object-cover"
-                        priority
+                        className="object-cover w-full h-full absolute inset-0"
                     />
                     <div className="absolute inset-0 bg-zinc-900/60" />
                 </div>

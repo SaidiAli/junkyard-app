@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import Image from 'next/image';
+
 import {
     MapPin,
     Calendar,
     Gauge,
     Fuel,
     Settings,
-    Car,
     Shield,
     Share2,
     Phone,
@@ -60,7 +59,7 @@ export default function SingleListingPage() {
                 const response = await ListingService.getById(id);
                 if (response.success && response.data) {
                     setListing(response.data);
-                    setMainImage(response.data.images[0] || '/imgs/car-placeholder.jpg');
+                    setMainImage(response.data.images[0]);
 
                     // Increment views
                     ListingService.incrementViews(id);
@@ -150,12 +149,10 @@ export default function SingleListingPage() {
                         {/* Image Gallery */}
                         <div className="space-y-4">
                             <div className="relative aspect-video w-full overflow-hidden rounded-lg border bg-muted">
-                                <Image
-                                    src={getImageUrl(mainImage) || '/imgs/car-placeholder.jpg'}
+                                <img
+                                    src={getImageUrl(mainImage)}
                                     alt={listing.title}
-                                    fill
-                                    className="object-cover"
-                                    priority
+                                    className="object-cover w-full h-full absolute inset-0"
                                 />
                                 <div className="absolute top-4 left-4">
                                     <Badge className="bg-primary text-white font-bold hover:bg-primary/90">
@@ -170,11 +167,10 @@ export default function SingleListingPage() {
                                         {listing.images.map((img, index) => (
                                             <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/3 md:basis-1/4 lg:basis-1/5 cursor-pointer" onClick={() => setMainImage(img)}>
                                                 <div className={`relative aspect-4/3 overflow-hidden rounded-md border-2 ${mainImage === img ? 'border-primary' : 'border-transparent'}`}>
-                                                    <Image
+                                                    <img
                                                         src={getImageUrl(img)}
                                                         alt={`View ${index + 1}`}
-                                                        fill
-                                                        className="object-cover hover:opacity-80 transition-opacity"
+                                                        className="object-cover hover:opacity-80 transition-opacity w-full h-full absolute inset-0"
                                                     />
                                                 </div>
                                             </CarouselItem>

@@ -1,7 +1,7 @@
 'use client'
 
 import { Menu } from "lucide-react";
-import Image from 'next/image';
+
 import { useState } from "react";
 import { Button } from "./ui/button";
 import {
@@ -39,7 +39,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link href={"/"}>
-              <Image
+              <img
                 src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764080623/junkyard/lrmnidwq25bck2xsvhlu.svg"
                 alt="Kars"
                 width={120}
@@ -83,7 +83,7 @@ const Navbar = () => {
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetContent side="left" className="w-3/4 sm:max-w-sm">
           <SheetHeader className="mb-8">
-            <Image
+            <img
               src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764080623/junkyard/lrmnidwq25bck2xsvhlu.svg"
               alt="Kars"
               width={120}

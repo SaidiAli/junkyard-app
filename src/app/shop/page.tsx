@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image';
+
 import {
     MapPin,
     Camera,
@@ -290,11 +290,10 @@ function ShopContent() {
                                                         </div>
                                                     )}
 
-                                                    <Image
+                                                    <img
                                                         src={getImageUrl(listing.images[0]) || "/imgs/car-placeholder.jpg"}
                                                         alt={listing.title}
-                                                        fill
-                                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-500 w-full h-full absolute inset-0"
                                                     />
 
                                                     <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded flex items-center gap-1">

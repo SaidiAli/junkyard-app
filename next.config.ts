@@ -11,10 +11,16 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "junkyard.ug",
+        hostname: "api.junkyard.ug",
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5000",
+        pathname: "/**",
+      }
     ],
   },
 };
