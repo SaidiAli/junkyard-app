@@ -50,6 +50,7 @@ export default function SingleListingPage() {
     const [loading, setLoading] = useState(true);
     const [mainImage, setMainImage] = useState<string>('');
     const [relatedListings, setRelatedListings] = useState<Listing[]>([]);
+    const [showNumber, setShowNumber] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -307,11 +308,22 @@ export default function SingleListingPage() {
 
                                 <div className="grid gap-3">
                                     {listing.contact ? (
-                                        <a href={`tel:${listing.contact.phone}`}>
-                                            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer">
-                                                <Phone className="h-5 w-5" /> Call Seller
-                                            </Button>
-                                        </a>
+                                        <>
+                                            <a href={`tel:${listing.contact.phone}`} className="md:hidden block w-full">
+                                                <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer">
+                                                    <Phone className="h-5 w-5" /> Call Seller
+                                                </Button>
+                                            </a>
+                                            <div className="hidden md:block w-full">
+                                                <Button
+                                                    size="lg"
+                                                    className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer"
+                                                    onClick={() => setShowNumber(!showNumber)}
+                                                >
+                                                    <Phone className="h-5 w-5" /> {showNumber ? listing.contact.phone : "Call Seller"}
+                                                </Button>
+                                            </div>
+                                        </>
                                     ) : (
                                         <Button size="lg" disabled className="w-full bg-muted text-muted-foreground gap-2 text-lg font-bold hover:cursor-not-allowed">
                                             <Phone className="h-5 w-5" /> No Phone Number
