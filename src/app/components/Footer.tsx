@@ -39,6 +39,12 @@ const Footer = () => {
                 <a href="https://instagram.com/junkyard256" target="_blank" className="flex items-center justify-center h-16 w-16 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
                   <Icon icon="line-md:instagram" className="h-8 w-8" />
                 </a>
+                <a href="https://www.snapchat.com/add/junkyard256?share_id=VSsyBEwycGA&locale=en-GB" target="_blank" className="flex items-center justify-center h-16 w-16 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+                  <Icon icon="fa:snapchat-square" className="h-8 w-8" />
+                </a>
+                <a href="https://tiktok.com/@junkyard256" target="_blank" className="flex items-center justify-center h-16 w-16 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+                  <Icon icon="line-md:tiktok" className="h-8 w-8" />
+                </a>
               </div>
             </div>
           </div>
