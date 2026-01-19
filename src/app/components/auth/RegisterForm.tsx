@@ -11,6 +11,7 @@ import { Label } from '@/app/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { authService } from '@/lib/auth';
+import { toast } from 'sonner';
 
 export default function RegisterForm() {
     const router = useRouter();
@@ -26,10 +27,10 @@ export default function RegisterForm() {
 
     const registerMutation = useMutation({
         mutationFn: authService.register,
-        onSuccess: () => {
-            // Redirect to login with success message
-            router.push('/login?registered=true');
-        },
+        onSuccess: (response) => {
+            // router.push('/login?registered=true');
+            toast.success(response.message)
+        }
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

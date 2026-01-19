@@ -88,12 +88,12 @@ api.interceptors.response.use(
             }
         }
 
-        // Handle other errors
-        const errorMessage =
-            error.response?.data?.error ||
-            error.response?.data?.message ||
-            error.message ||
-            "An unexpected error occurred"
+        const { response } = error;
+        let errorMessage;
+
+        if(!response?.data.success) {
+            errorMessage = response?.data.message ?? "An unexpected error occured. Please try again!"
+        }
 
         return Promise.reject(new Error(errorMessage))
     }

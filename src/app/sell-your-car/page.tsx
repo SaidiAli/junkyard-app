@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Upload, Info } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
@@ -12,7 +12,7 @@ import { Checkbox } from "@/app/components/ui/checkbox";
 import { Label } from "@/app/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
-import { adTypes, brands, categories, conditions, driveTypes, featuresList, fuelTypes, locations, transmissions } from '@/lib/data';
+import { brands, categories, conditions, driveTypes, featuresList, fuelTypes, locations, transmissions } from '@/lib/data';
 import { ApiResponse } from '@/lib/types';
 import api from '@/lib/api';
 
@@ -91,10 +91,9 @@ export default function SellYourCarPage() {
       }
     },
     onError: (error: any) => {
-      console.error('Submission error:', error);
       const errorData = error.response?.data;
-      if (errorData && errorData.errors) {
-        const errorMessages = errorData.errors.map((err: { field: string, message: string }) => `${err.field}: ${err.message}`).join('\n');
+      if (errorData && !errorData.success) {
+        const errorMessages = errorData.message;
         alert(`Failed to submit ad:\n${errorMessages}`);
       } else {
         alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);

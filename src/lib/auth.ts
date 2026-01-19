@@ -14,7 +14,7 @@ export interface RegisterData {
     role?: 'seller';
 }
 
-export interface AuthResponse {
+export interface LoginResponse {
     success: boolean;
     message: string;
     data: {
@@ -33,13 +33,19 @@ export interface AuthResponse {
     };
 }
 
+export interface RegistrationResponse {
+    success: boolean;
+    message: string;
+}
+
 export const authService = {
-    login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
+    login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
         const response = await api.post('/auth/login', credentials);
+        console.log({ response })
         return response.data;
     },
 
-    register: async (data: RegisterData): Promise<AuthResponse> => {
+    register: async (data: RegisterData): Promise<RegistrationResponse> => {
         const response = await api.post('/auth/register', data);
         return response.data;
     },

@@ -24,7 +24,6 @@ export default function LoginForm() {
     const loginMutation = useMutation({
         mutationFn: authService.login,
         onSuccess: (response) => {
-            console.log({ response });
             // Use auth context to update global state
             authLogin(
                 response.data.tokens.accessToken,

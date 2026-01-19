@@ -5,10 +5,12 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/app/comp
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
 import { plans } from '@/lib/data';
+import { useRouter } from 'next/navigation';
 
 export default function PricingPage() {
+    const router = useRouter();
     return (
-        <section className="min-h-screen bg-gradient-to-b from-background to-muted/50 pt-20">
+        <section className="min-h-screen bg-linear-to-b from-background to-muted/50 pt-20">
 
             <div className="container mx-auto px-4 py-16 md:py-24">
                 <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -56,7 +58,7 @@ export default function PricingPage() {
                             <Button
                                 variant={plan.mostPopular ? 'default' : 'outline'}
                                 className="w-full"
-                                onClick={() => console.log(`Selected ${plan.name}`)}
+                                onClick={() => router.push('/sell-your-car')}
                             >
                                 {plan.mostPopular ? 'Get Started' : 'Select'}
                             </Button>
