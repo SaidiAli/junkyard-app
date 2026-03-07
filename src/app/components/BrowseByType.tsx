@@ -29,7 +29,7 @@ const BrowseByType = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {types.map((type, index) => (
-            <a href={`/shop?category=${type.path}`}>
+            <a href={`/shop?category=${type.path}`} key={index}>
               <div
                 key={index}
                 className="group relative overflow-hidden rounded-lg aspect-[3/4] cursor-pointer"

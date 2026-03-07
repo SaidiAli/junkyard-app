@@ -41,7 +41,7 @@ export default function SellYourCarPage() {
   const { data: packages } = useQuery({
     queryKey: ['packages'],
     queryFn: async () => {
-      const response = await api.get<ApiResponse<any[]>>("/packages")
+      const response = await api.get<ApiResponse<any[]>>("/packages/public")
       return response.data.data!
     },
   });

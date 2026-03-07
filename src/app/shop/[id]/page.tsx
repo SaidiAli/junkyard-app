@@ -271,13 +271,13 @@ export default function SingleListingPage() {
 
                                 <TabsContent value="features" className="mt-0">
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                        {listing.features.map((feature, index) => (
+                                        {Array.isArray(listing.features) && listing.features.map((feature, index) => (
                                             <div key={index} className="flex items-center gap-2">
                                                 <div className="h-2 w-2 rounded-full bg-primary" />
                                                 <span className="text-sm text-foreground">{feature}</span>
                                             </div>
                                         ))}
-                                        {listing.features.length === 0 && <p className="text-muted-foreground">No specific features listed.</p>}
+                                        {(!Array.isArray(listing.features) || listing.features.length === 0) && <p className="text-muted-foreground">No specific features listed.</p>}
                                     </div>
                                 </TabsContent>
                             </div>
@@ -390,12 +390,12 @@ export default function SingleListingPage() {
                                 key={vehicle.id}
                                 id={vehicle.id}
                                 image={vehicle.images[0] || "/imgs/car-placeholder.jpg"}
-                                name={`${vehicle.brand} ${vehicle.model}`}
+                                name={`${vehicle.title}`}
                                 price={vehicle.price}
                                 year={vehicle.yearOfMake?.toString()}
                                 mileage={vehicle.mileage?.toString()}
                                 fuel={vehicle.fuelType}
-                                seats={vehicle.features.find(f => f.includes('Seats')) || undefined}
+                                // seats={vehicle.features.find(f => f.includes('Seats')) || undefined}
                             />
                         ))}
                     </div>

@@ -44,9 +44,6 @@ const PremiumAds = () => {
     );
   }
 
-  // If no featured, maybe show latest or nothing? 
-  // Let's show nothing if strictly no featured, or fallback logic if desired.
-  // For now, if empty, hide section.
   if (listings.length === 0) return null;
 
   return (
@@ -68,12 +65,12 @@ const PremiumAds = () => {
               key={listing.id}
               id={listing.id}
               image={listing.images[0] || "/imgs/car-placeholder.jpg"}
-              name={`${listing.brand} ${listing.model}`}
+              name={`${listing.title}`}
               price={listing.price}
               year={listing.yearOfMake?.toString()}
               mileage={listing.mileage?.toString()}
               fuel={listing.fuelType}
-              seats={listing.features.find(f => f.includes('Seats')) || undefined}
+              // seats={listing.features.find(f => f.includes('Seats')) || undefined}
             />
           ))}
         </div>

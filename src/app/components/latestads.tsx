@@ -58,7 +58,7 @@ const LatestAds = () => {
               year={listing.yearOfMake?.toString()}
               mileage={listing.mileage?.toString()}
               fuel={listing.fuelType}
-              seats={listing.features.find(f => f.includes('Seats')) || undefined}
+              // seats={listing.features.find(f => f.includes('Seats')) || undefined}
             />
           ))}
         </div>
