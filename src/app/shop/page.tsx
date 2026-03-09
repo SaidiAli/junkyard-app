@@ -1,35 +1,13 @@
 'use client'
 
 
-import {
-    MapPin,
-    Camera,
-    LayoutGrid,
-    List as ListIcon,
-    Search,
-    Loader2
-} from 'lucide-react';
-
+import { MapPin, Camera, LayoutGrid, List as ListIcon, Search, Loader2 } from 'lucide-react';
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/app/components/ui/select";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-    PaginationEllipsis
-} from "@/app/components/ui/pagination";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/app/components/ui/select";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/app/components/ui/pagination";
 import { Separator } from "@/app/components/ui/separator";
 import Link from 'next/link';
 import { useEffect, useState, Suspense } from 'react';
@@ -326,7 +304,7 @@ function ShopContent() {
 
                                                     <div className="flex items-end justify-between mt-auto">
                                                         <div className="text-right w-full">
-                                                            <p className="text-xl font-bold text-foreground">UGX {listing.price}</p>
+                                                            <p className="text-xl font-bold text-foreground">UGX {parseFloat(listing.price).toLocaleString()}</p>
                                                         </div>
                                                     </div>
                                                 </CardContent>
