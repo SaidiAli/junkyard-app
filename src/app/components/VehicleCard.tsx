@@ -13,9 +13,10 @@ interface VehicleCardProps {
   mileage?: string;
   fuel?: string;
   seats?: string;
+  status?: string;
 }
 
-const VehicleCard = ({ id, image, name, price, year, mileage, fuel, seats }: VehicleCardProps) => {
+const VehicleCard = ({ id, image, name, price, year, mileage, fuel, seats, status }: VehicleCardProps) => {
   return (
     <Link href={`/shop/${id}`}>
       <Card className="group overflow-hidden hover:shadow-hover transition-all duration-300 border-border h-full flex flex-col">
@@ -25,6 +26,11 @@ const VehicleCard = ({ id, image, name, price, year, mileage, fuel, seats }: Veh
             alt={name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
+          {status === 'sold' && (
+            <div className="absolute top-4 -right-10 bg-red-600 text-white text-[10px] font-bold py-1 px-10 rotate-45 z-10 shadow-md">
+              SOLD
+            </div>
+          )}
           {year && (
             <div className="absolute bottom-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
               {year}

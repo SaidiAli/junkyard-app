@@ -160,6 +160,13 @@ export default function SingleListingPage() {
                                         {listing.condition === 'foreign_used' ? 'Foreign Used' : listing.condition === 'locally_used' ? 'Local Used' : 'New'}
                                     </Badge>
                                 </div>
+                                {listing.status === 'sold' && (
+                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                        <div className="bg-red-600 text-white text-2xl font-bold px-8 py-3 rounded-lg shadow-lg rotate-[-8deg] border-4 border-white">
+                                            SOLD
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {listing.images.length > 1 && (
@@ -307,43 +314,53 @@ export default function SingleListingPage() {
                                 <Separator />
 
                                 <div className="grid gap-3">
-                                    {listing.contact ? (
+                                    {listing.status === 'sold' ? (
+                                        <div className="flex flex-col items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-lg text-center">
+                                            <Icon icon="mdi:tag-check" className="h-8 w-8 text-red-600" />
+                                            <p className="font-bold text-red-700 text-lg">This vehicle has been sold</p>
+                                            <p className="text-sm text-red-600">This listing is no longer available for purchase.</p>
+                                        </div>
+                                    ) : (
                                         <>
-                                            <a href={`tel:${listing.contact.phone}`} className="md:hidden block w-full">
-                                                <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer">
-                                                    <Phone className="h-5 w-5" /> Call Seller
+                                            {listing.contact ? (
+                                                <>
+                                                    <a href={`tel:${listing.contact.phone}`} className="md:hidden block w-full">
+                                                        <Button size="lg" className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer">
+                                                            <Phone className="h-5 w-5" /> Call Seller
+                                                        </Button>
+                                                    </a>
+                                                    <div className="hidden md:block w-full">
+                                                        <Button
+                                                            size="lg"
+                                                            className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer"
+                                                            onClick={() => setShowNumber(!showNumber)}
+                                                        >
+                                                            <Phone className="h-5 w-5" /> {showNumber ? listing.contact.phone : "Call Seller"}
+                                                        </Button>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <Button size="lg" disabled className="w-full bg-muted text-muted-foreground gap-2 text-lg font-bold hover:cursor-not-allowed">
+                                                    <Phone className="h-5 w-5" /> No Phone Number
                                                 </Button>
-                                            </a>
-                                            <div className="hidden md:block w-full">
-                                                <Button
-                                                    size="lg"
-                                                    className="w-full bg-primary hover:bg-primary/90 gap-2 text-lg font-bold hover:cursor-pointer"
-                                                    onClick={() => setShowNumber(!showNumber)}
-                                                >
-                                                    <Phone className="h-5 w-5" /> {showNumber ? listing.contact.phone : "Call Seller"}
-                                                </Button>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <Button size="lg" disabled className="w-full bg-muted text-muted-foreground gap-2 text-lg font-bold hover:cursor-not-allowed">
-                                            <Phone className="h-5 w-5" /> No Phone Number
-                                        </Button>
-                                    )}
+                                            )}
 
-                                    {listing.contact ? (
-                                        <a
-                                            href={`https://wa.me/${listing.contact.phone.replace(/\D/g, '').replace(/^0/, '256')}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            <Button size="lg" variant="outline" className="w-full text-white bg-[#25D366] hover:bg-[#25D366]/80 gap-2 font-bold hover:cursor-pointer">
-                                                <Icon icon={"ic:baseline-whatsapp"} className="h-8 w-8" /> Chat on WhatsApp
-                                            </Button>
-                                        </a>
-                                    ) : (
-                                        <Button size="lg" variant="outline" disabled className="w-full border-primary text-primary gap-2 font-bold opacity-50 hover:cursor-not-allowed">
-                                            <Icon icon={"ic:baseline-whatsapp"} className="h-8 w-8" /> Chat on WhatsApp
-                                        </Button>
+                                            {listing.contact ? (
+                                                <a
+                                                    href={`https://wa.me/${listing.contact.phone.replace(/\D/g, '').replace(/^0/, '256')}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <Button size="lg" variant="outline" className="w-full text-white bg-[#25D366] hover:bg-[#25D366]/80 gap-2 font-bold hover:cursor-pointer">
+                                                        <Icon icon={"ic:baseline-whatsapp"} className="h-8 w-8" /> Chat on WhatsApp
+                                                    </Button>
+                                                </a>
+                                            ) : (
+                                                <Button size="lg" variant="outline" disabled className="w-full border-primary text-primary gap-2 font-bold opacity-50 hover:cursor-not-allowed">
+                                                    <Icon icon={"ic:baseline-whatsapp"} className="h-8 w-8" /> Chat on WhatsApp
+                                                </Button>
+                                            )}
+                                        </>
                                     )}
                                 </div>
 
@@ -395,6 +412,7 @@ export default function SingleListingPage() {
                                 year={vehicle.yearOfMake?.toString()}
                                 mileage={vehicle.mileage?.toString()}
                                 fuel={vehicle.fuelType}
+                                status={vehicle.status}
                                 // seats={vehicle.features.find(f => f.includes('Seats')) || undefined}
                             />
                         ))}

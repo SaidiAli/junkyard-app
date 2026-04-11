@@ -267,6 +267,11 @@ function ShopContent() {
                                                             FEATURED
                                                         </div>
                                                     )}
+                                                    {listing.status === 'sold' && (
+                                                        <div className="absolute top-4 -right-10 bg-red-600 text-white text-[10px] font-bold py-1 px-10 rotate-45 z-10 shadow-md">
+                                                            SOLD
+                                                        </div>
+                                                    )}
 
                                                     <img
                                                         src={getImageUrl(listing.images[0]) || "/imgs/car-placeholder.jpg"}
