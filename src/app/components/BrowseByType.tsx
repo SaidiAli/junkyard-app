@@ -3,10 +3,10 @@ import { Button } from "./ui/button";
 
 const BrowseByType = () => {
   const types = [
-    { name: "Sedan", path: "sedan", image: "https://res.cloudinary.com/zurri-cloud/image/upload/v1765110018/junkyard/v2w1dp6sm3qqskor31hd.jpg" },
-    { name: "SUV", path: "suv", image: "https://res.cloudinary.com/zurri-cloud/image/upload/v1765110018/junkyard/q6p1xs4p9foohscsuqqk.jpg" },
-    { name: "Mini Bus", path: "mini-truck", image: "https://res.cloudinary.com/zurri-cloud/image/upload/v1765110018/junkyard/ejtv90spyaj5ax8n60nh.jpg" },
-    { name: "Pickup", path: "pickup", image: "https://res.cloudinary.com/zurri-cloud/image/upload/v1765110018/junkyard/m1efwmyutxv41lhptld2.jpg" },
+    { name: "Sedan", path: "sedan", image: "https://assets.junkyard.ug/junkyard/v2w1dp6sm3qqskor31hd.jpg" },
+    { name: "SUV", path: "suv", image: "https://assets.junkyard.ug/junkyard/q6p1xs4p9foohscsuqqk.jpg" },
+    { name: "Mini Bus", path: "mini-truck", image: "https://assets.junkyard.ug/junkyard/ejtv90spyaj5ax8n60nh.jpg" },
+    { name: "Pickup", path: "pickup", image: "https://assets.junkyard.ug/junkyard/m1efwmyutxv41lhptld2.jpg" },
   ];
 
   return (

@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="flex-shrink-0">
             <img
-              src="https://res.cloudinary.com/zurri-cloud/image/upload/v1764080623/junkyard/lrmnidwq25bck2xsvhlu.svg"
+              src="https://assets.junkyard.ug/junkyard/lrmnidwq25bck2xsvhlu.svg"
               alt="Junkyard Concepts"
               width={140}
               height={40}
