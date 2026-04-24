@@ -42,7 +42,7 @@ function ShopContent() {
 
     const [listings, setListings] = useState<Listing[]>([]);
     const [loading, setLoading] = useState(true);
-    const [meta, setMeta] = useState<any>(null); // PaginatedResponse meta
+    const [meta, setMeta] = useState<any>(null);
 
     // Filters state
     const [category, setCategory] = useState(searchParams.get('category') || 'all');
@@ -263,12 +263,12 @@ function ShopContent() {
                                             <Card className="overflow-hidden hover:shadow-md transition-all duration-300 group border-border h-full flex flex-col">
                                                 <div className="relative aspect-4/3 bg-muted">
                                                     {listing.isFeatured && (
-                                                        <div className="absolute top-4 -left-10 bg-primary text-white text-[10px] font-bold py-1 px-10 -rotate-45 z-10 shadow-md">
+                                                        <div className="absolute top-7 -left-12 bg-primary text-white text-lg font-black py-1.5 w-48 text-center -rotate-45 z-10 shadow-xl uppercase tracking-wider">
                                                             FEATURED
                                                         </div>
                                                     )}
                                                     {listing.status === 'sold' && (
-                                                        <div className="absolute top-4 -right-10 bg-red-600 text-white text-[10px] font-bold py-1 px-10 rotate-45 z-10 shadow-md">
+                                                        <div className="absolute top-7 -right-12 bg-red-600 text-white text-lg font-black py-1.5 w-48 text-center rotate-45 z-10 shadow-xl uppercase tracking-wider">
                                                             SOLD
                                                         </div>
                                                     )}

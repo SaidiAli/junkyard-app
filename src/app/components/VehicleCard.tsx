@@ -27,7 +27,7 @@ const VehicleCard = ({ id, image, name, price, year, mileage, fuel, seats, statu
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           {status === 'sold' && (
-            <div className="absolute top-4 -right-10 bg-red-600 text-white text-[10px] font-bold py-1 px-10 rotate-45 z-10 shadow-md">
+            <div className="absolute top-7 -right-12 bg-red-600 text-white text-lg font-black py-1.5 w-48 text-center rotate-45 z-10 shadow-xl uppercase tracking-wider">
               SOLD
             </div>
           )}
