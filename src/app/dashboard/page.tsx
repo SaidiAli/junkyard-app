@@ -45,7 +45,7 @@ export default function MyListingsPage() {
         try {
             const response = await api.get<ApiResponse<Listing[]>>('/users/my-listings');
             if (response.data.success && response.data.data) {
-                setListings(response.data.data);
+                setListings(response.data.data.filter((listing) => listing.isActive));
             }
         } catch (error) {
             console.error('Error fetching listings:', error);
@@ -64,7 +64,7 @@ export default function MyListingsPage() {
             fetchListings();
         } catch (error) {
             console.error('Error deleting listing:', error);
-            toast.error('Failed to delete listing');
+            toast.error((error as Error).message || 'Failed to delete listing');
         }
     };
 

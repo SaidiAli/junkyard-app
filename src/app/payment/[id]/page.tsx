@@ -10,6 +10,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Label } from "@/app/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 import api from '@/lib/api';
+import { ApiResponse, Listing } from '@/lib/types';
+
+type Package = {
+    id: string;
+    name: string;
+    displayName: string;
+    price: string;
+};
 
 export default function PaymentPage() {
     const router = useRouter();
@@ -19,14 +27,25 @@ export default function PaymentPage() {
     const [paymentReference, setPaymentReference] = useState<string | null>(null);
     const [polling, setPolling] = useState(false);
 
-    // Fetch listing details
     const { data: listing, isLoading: listingLoading } = useQuery({
-        queryKey: ['listing', listingId],
+        queryKey: ['my-listing', listingId],
         queryFn: async () => {
-            const response = await api.get(`/listings/${listingId}`);
-            return response.data.data;
+            const response = await api.get<ApiResponse<Listing[]>>('/users/my-listings');
+            const foundListing = response.data.data?.find((item) => item.id === listingId);
+            if (!foundListing) {
+                throw new Error('Listing not found');
+            }
+            return foundListing;
         },
         enabled: !!listingId,
+    });
+
+    const { data: packages = [] } = useQuery({
+        queryKey: ['packages'],
+        queryFn: async () => {
+            const response = await api.get<ApiResponse<Package[]>>('/packages/public');
+            return response.data.data || [];
+        },
     });
 
     // Initiate Payment Mutation
@@ -46,11 +65,8 @@ export default function PaymentPage() {
 
     // Check if already paid
     useEffect(() => {
-        if (listing && listing.payments) {
-            const completedPayment = listing.payments.find((p: any) => p.status === 'completed');
-            if (completedPayment) {
-                router.push('/payment/success');
-            }
+        if (listing?.status === 'approved') {
+            router.push(`/showroom-offer/${listing.id}`);
         }
     }, [listing, router]);
 
@@ -67,7 +83,7 @@ export default function PaymentPage() {
                     if (status === 'completed') {
                         setPolling(false);
                         clearInterval(intervalId);
-                        router.push('/payment/success');
+                        router.push(`/showroom-offer/${listingId}`);
                     } else if (status === 'failed') {
                         setPolling(false);
                         clearInterval(intervalId);
@@ -95,7 +111,6 @@ export default function PaymentPage() {
         initiatePaymentMutation.mutate({
             listingId: listing.id,
             packageId: listing.packageId,
-            userId: listing.userId,
             paymentMethod: 'mobile_money',
             payerPhone: phoneNumber,
         });
@@ -117,8 +132,7 @@ export default function PaymentPage() {
         );
     }
 
-    const pkg = listing.package;
-    // If no package (data structure mismatch), handle safely
+    const pkg = packages.find((item) => item.id === listing.packageId);
     const amount = pkg ? pkg.price : '0';
 
     return (
@@ -153,7 +167,7 @@ export default function PaymentPage() {
                                 <AlertCircle className="h-4 w-4" />
                                 <AlertTitle>Error</AlertTitle>
                                 <AlertDescription>
-                                    {"Failed to initiate payment. Please try again."}
+                                    {(initiatePaymentMutation.error as Error)?.message || "Failed to initiate payment. Please try again."}
                                 </AlertDescription>
                             </Alert>
                         )}

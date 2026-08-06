@@ -50,7 +50,6 @@ export default function RegisterForm() {
             email: formData.email,
             phone: formData.phone,
             password: formData.password,
-            role: formData.isSeller ? 'seller' as const : undefined,
         };
 
         registerMutation.mutate(payload);

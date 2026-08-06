@@ -29,7 +29,7 @@ function VerifyEmailContent() {
                 // setTimeout(() => router.push('/login'), 3000);
             } catch (error: any) {
                 setStatus('error');
-                setMessage(error.response?.data?.message || 'Failed to verify email. The token may be invalid or expired.');
+                setMessage(error.message || 'Failed to verify email. The token may be invalid or expired.');
             }
         };
 

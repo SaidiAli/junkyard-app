@@ -91,13 +91,7 @@ export default function SellYourCarPage() {
       }
     },
     onError: (error: any) => {
-      const errorData = error.response?.data;
-      if (errorData && !errorData.success) {
-        const errorMessages = errorData.message;
-        alert(`Failed to submit ad:\n${errorMessages}`);
-      } else {
-        alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);
-      }
+      alert(`Failed to submit ad: ${error.message || 'Unknown error'}`);
     }
   });
 

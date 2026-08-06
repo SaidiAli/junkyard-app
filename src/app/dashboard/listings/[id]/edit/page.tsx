@@ -32,10 +32,14 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
     const router = useRouter();
 
     const { data: listing, isLoading: isFetching } = useQuery({
-        queryKey: ['listing', id],
+        queryKey: ['my-listing', id],
         queryFn: async () => {
-            const response = await api.get<ApiResponse<Listing>>(`/listings/${id}`);
-            return response.data.data!;
+            const response = await api.get<ApiResponse<Listing[]>>('/users/my-listings');
+            const foundListing = response.data.data?.find((item) => item.id === id);
+            if (!foundListing) {
+                throw new Error('Listing not found');
+            }
+            return foundListing;
         },
     });
 
@@ -49,13 +53,7 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
         },
         onError: (error: any) => {
             console.error('Update error:', error);
-            const errorData = error.response?.data;
-            if (errorData && errorData.errors) {
-                const errorMessages = errorData.errors.map((err: { field: string, message: string }) => `${err.field}: ${err.message}`).join(', ');
-                toast.error(`Failed to update listing: ${errorMessages}`);
-            } else {
-                toast.error(`Failed to update listing: ${error.message || 'Unknown error'}`);
-            }
+            toast.error(`Failed to update listing: ${error.message || 'Unknown error'}`);
         }
     });
 

@@ -24,7 +24,7 @@ export default function PaymentSuccessPage() {
                     </p>
                 </CardContent>
                 <CardFooter className="flex justify-center">
-                    <Button onClick={() => router.push('/dashboard/listings')} size="lg" className="w-full">
+                    <Button onClick={() => router.push('/dashboard')} size="lg" className="w-full">
                         Go to Dashboard
                     </Button>
                 </CardFooter>

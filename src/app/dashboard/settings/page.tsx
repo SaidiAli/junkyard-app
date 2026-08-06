@@ -79,7 +79,7 @@ export default function SettingsPage() {
             toast.success('Profile updated successfully');
         } catch (error: any) {
             console.error('Error updating profile:', error);
-            const message = error.response?.data?.message || 'Failed to update profile';
+            const message = error.message || 'Failed to update profile';
             toast.error(message);
         } finally {
             setIsLoading(false);
@@ -113,7 +113,7 @@ export default function SettingsPage() {
             });
         } catch (error: any) {
             console.error('Error updating password:', error);
-            const message = error.response?.data?.message || 'Failed to update password';
+            const message = error.message || 'Failed to update password';
             toast.error(message);
         } finally {
             setIsPasswordLoading(false);
@@ -133,7 +133,7 @@ export default function SettingsPage() {
             router.push('/');
         } catch (error: any) {
             console.error('Error deleting account:', error);
-            const message = error.response?.data?.message || 'Failed to delete account';
+            const message = error.message || 'Failed to delete account';
             toast.error(message);
             setIsDeleteLoading(false);
         }
