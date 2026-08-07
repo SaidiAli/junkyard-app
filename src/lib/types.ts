@@ -116,6 +116,32 @@ export interface Payment {
     listing?: Listing; // Optional, might be joined
 }
 
+export type ShowroomRequestStatus = 'pending' | 'accepted' | 'declined' | 'cancelled';
+
+export interface ShowroomRequest {
+    id: string;
+    userId: string;
+    listingId: string;
+    partnerName: string;
+    partnerDisplayName: string;
+    showroomAddress: string;
+    commissionRate: string;
+    standardCommissionRate: string;
+    status: ShowroomRequestStatus;
+    sellerNotes?: string | null;
+    adminNotes?: string | null;
+    reviewedBy?: string | null;
+    reviewedAt?: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ShowroomRequestWithDetails {
+    request: ShowroomRequest;
+    listing: Pick<Listing, 'id' | 'title' | 'brand' | 'model' | 'price' | 'status' | 'isActive'> | null;
+    user: Pick<User, 'id' | 'firstName' | 'lastName' | 'email' | 'phone'> | null;
+}
+
 export interface User {
     id: string;
     email: string;
