@@ -94,7 +94,7 @@ export default function PaymentPage() {
                 } catch (error) {
                     console.error("Polling error", error);
                 }
-            }, 15000); // Check every 15 seconds
+            }, 5000); // Check every 5 seconds
         }
 
         return () => clearInterval(intervalId);
