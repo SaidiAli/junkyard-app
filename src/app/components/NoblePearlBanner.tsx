@@ -26,7 +26,7 @@ const NoblePearlBanner = () => {
   });
 
   return (
-    <section className="pt-8 md:pt-20">
+    <section className="pt-8 md:pt-20 container mx-auto px-4">
       <Link href="/dashboard" aria-label="Park your listed car on the Noble Pearl showroom floor">
         <picture>
           <source media="(min-width: 768px)" srcSet={desktopSrcSet} sizes={desktopSizes} />
