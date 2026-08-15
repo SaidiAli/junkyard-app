@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Loader2, Phone, CheckCircle, AlertCircle } from 'lucide-react';
+import { Loader2, Phone, AlertCircle } from 'lucide-react';
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/app/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
 import { Label } from "@/app/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 import api from '@/lib/api';
@@ -26,6 +26,7 @@ export default function PaymentPage() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [paymentReference, setPaymentReference] = useState<string | null>(null);
     const [polling, setPolling] = useState(false);
+    const [paymentFailed, setPaymentFailed] = useState(false);
 
     const { data: listing, isLoading: listingLoading } = useQuery({
         queryKey: ['my-listing', listingId],
@@ -56,6 +57,7 @@ export default function PaymentPage() {
         },
         onSuccess: (data) => {
             setPaymentReference(data.payment.paymentReference);
+            setPaymentFailed(false);
             setPolling(true);
         },
         onError: (error: any) => {
@@ -78,7 +80,7 @@ export default function PaymentPage() {
             intervalId = setInterval(async () => {
                 try {
                     const response = await api.post('/payments/verify', { paymentReference });
-                    const status = response.data?.data?.payment?.status;
+                    const status = response.data?.data?.status;
 
                     if (status === 'completed') {
                         setPolling(false);
@@ -86,6 +88,7 @@ export default function PaymentPage() {
                         router.push(`/showroom-offer/${listingId}`);
                     } else if (status === 'failed') {
                         setPolling(false);
+                        setPaymentFailed(true);
                         clearInterval(intervalId);
                     }
                 } catch (error) {
@@ -168,6 +171,16 @@ export default function PaymentPage() {
                                 <AlertTitle>Error</AlertTitle>
                                 <AlertDescription>
                                     {(initiatePaymentMutation.error as Error)?.message || "Failed to initiate payment. Please try again."}
+                                </AlertDescription>
+                            </Alert>
+                        )}
+
+                        {paymentFailed && (
+                            <Alert variant="destructive">
+                                <AlertCircle className="h-4 w-4" />
+                                <AlertTitle>Payment failed</AlertTitle>
+                                <AlertDescription>
+                                    The mobile money payment was not approved. Please try again.
                                 </AlertDescription>
                             </Alert>
                         )}
