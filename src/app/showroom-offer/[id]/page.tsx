@@ -129,7 +129,7 @@ export default function ShowroomOfferPage() {
     }
 
     return (
-        <main className="relative min-h-screen overflow-hidden bg-[#020402] px-4 pb-8 pt-28 text-white lg:h-screen lg:pb-4 lg:pt-[6.5rem]">
+        <main className="relative min-h-screen overflow-y-auto overflow-x-hidden bg-[#020402] px-4 pb-8 pt-28 text-white lg:h-screen lg:pb-4 lg:pt-[6.5rem]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(0,209,47,0.22),transparent_32%),radial-gradient(circle_at_85%_20%,rgba(0,209,47,0.14),transparent_28%),linear-gradient(135deg,#020402_0%,#071407_48%,#000_100%)]" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#00d12f] to-transparent opacity-70" />
 
